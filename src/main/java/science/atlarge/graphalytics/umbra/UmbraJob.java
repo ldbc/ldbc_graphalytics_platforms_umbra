@@ -1,4 +1,4 @@
-package science.atlarge.graphalytics.graphblas;
+package science.atlarge.graphalytics.umbra;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
@@ -14,6 +14,10 @@ import science.atlarge.graphalytics.execution.RunSpecification;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
 
 
 /**
@@ -22,7 +26,7 @@ import java.nio.file.Paths;
  *
  * @author Bálint Hegyi
  */
-public abstract class GraphblasJob {
+public abstract class UmbraJob {
 
 	private static final Logger LOG = LogManager.getLogger();
 
@@ -35,7 +39,7 @@ public abstract class GraphblasJob {
 	protected final RunSpecification runSpecification;
 	protected final Graph benchmarkGraph;
 
-	protected final GraphblasConfiguration platformConfig;
+	protected final UmbraConfiguration platformConfig;
 
 	/**
      * Initializes the platform job with its parameters.
@@ -44,7 +48,7 @@ public abstract class GraphblasJob {
 	 * @param inputPath the file path of the input graph dataset.
 	 * @param outputPath the file path of the output graph dataset.
 	 */
-	public GraphblasJob(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
+	public UmbraJob(RunSpecification runSpecification, UmbraConfiguration platformConfig,
 						String inputPath, String outputPath, Graph benchmarkGraph) {
 		BenchmarkRun benchmarkRun = runSpecification.getBenchmarkRun();
 		BenchmarkRunSetup benchmarkRunSetup = runSpecification.getBenchmarkRunSetup();

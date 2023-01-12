@@ -1,4 +1,4 @@
-package science.atlarge.graphalytics.graphblas;
+package science.atlarge.graphalytics.umbra;
 
 import java.time.Instant;
 

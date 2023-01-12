@@ -9,7 +9,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<platform.name>graphblas</platform.name>
+		<platform.name>umbra</platform.name>
 
 		<graphalytics.version>1.5.0-SNAPSHOT</graphalytics.version>
 		<commons.exec.version>1.3</commons.exec.version>
@@ -139,7 +139,7 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.5.3</version>
 				<configuration>
-					<finalName>graphalytics-${graphalytics.version}-graphblas-${project.version}</finalName>
+					<finalName>graphalytics-${graphalytics.version}-umbra-${project.version}</finalName>
 					<tarLongFileMode>posix</tarLongFileMode>
 					<outputDirectory>${project.basedir}</outputDirectory>
 				</configuration>
@@ -154,7 +154,7 @@
 							<descriptors>
 								<descriptor>src/main/assembly/bin.xml</descriptor>
 							</descriptors>
-							<finalName>graphalytics-${graphalytics.version}-graphblas-${project.version}</finalName>
+							<finalName>graphalytics-${graphalytics.version}-umbra-${project.version}</finalName>
 							<tarLongFileMode>posix</tarLongFileMode>
 							<outputDirectory>${project.basedir}</outputDirectory>
 						</configuration>

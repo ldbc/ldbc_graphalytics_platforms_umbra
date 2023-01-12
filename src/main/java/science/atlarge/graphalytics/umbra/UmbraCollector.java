@@ -1,4 +1,4 @@
-package science.atlarge.graphalytics.graphblas;
+package science.atlarge.graphalytics.umbra;
 
 import org.apache.commons.io.output.TeeOutputStream;
 import org.apache.logging.log4j.LogManager;
@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicLong;
  *
  * @author Bálint Hegyi
  */
-public class GraphblasCollector {
+public class UmbraCollector {
 
 	protected static final Logger LOG = LogManager.getLogger();
 

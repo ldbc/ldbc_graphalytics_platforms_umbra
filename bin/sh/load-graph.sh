@@ -49,16 +49,3 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
 done
 
 mkdir -p ${OUTPUT_PATH}
-
-if [[ ! -f ${OUTPUT_PATH}/graph.grb && ! -f ${OUTPUT_PATH}/graph.vtb ]]; then
-    bin/exe/converter \
-        --binary true \
-        --input-vertex ${INPUT_VERTEX_PATH} \
-        --input-edge ${INPUT_EDGE_PATH} \
-        --output-matrix  ${OUTPUT_PATH}/graph.grb \
-        --output-mapping ${OUTPUT_PATH}/graph.vtb \
-        --weighted ${WEIGHTED} \
-        --directed ${DIRECTED}
-else
-    echo "Transformed file already existing, no load required"
-fi

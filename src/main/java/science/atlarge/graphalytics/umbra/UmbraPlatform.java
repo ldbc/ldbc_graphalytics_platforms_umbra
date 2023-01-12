@@ -1,4 +1,4 @@
-package science.atlarge.graphalytics.graphblas;
+package science.atlarge.graphalytics.umbra;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,12 +8,12 @@ import science.atlarge.graphalytics.domain.graph.FormattedGraph;
 import science.atlarge.graphalytics.domain.graph.Graph;
 import science.atlarge.graphalytics.domain.graph.LoadedGraph;
 import science.atlarge.graphalytics.execution.*;
-import science.atlarge.graphalytics.graphblas.algorithms.bfs.BreadthFirstSearchJob;
-import science.atlarge.graphalytics.graphblas.algorithms.cdlp.CommunityDetectionLPJob;
-import science.atlarge.graphalytics.graphblas.algorithms.lcc.LocalClusteringCoefficientJob;
-import science.atlarge.graphalytics.graphblas.algorithms.pr.PageRankJob;
-import science.atlarge.graphalytics.graphblas.algorithms.sssp.SingleSourceShortestPathJob;
-import science.atlarge.graphalytics.graphblas.algorithms.wcc.WeaklyConnectedComponents;
+import science.atlarge.graphalytics.umbra.algorithms.bfs.BreadthFirstSearchJob;
+import science.atlarge.graphalytics.umbra.algorithms.cdlp.CommunityDetectionLPJob;
+import science.atlarge.graphalytics.umbra.algorithms.lcc.LocalClusteringCoefficientJob;
+import science.atlarge.graphalytics.umbra.algorithms.pr.PageRankJob;
+import science.atlarge.graphalytics.umbra.algorithms.sssp.SingleSourceShortestPathJob;
+import science.atlarge.graphalytics.umbra.algorithms.wcc.WeaklyConnectedComponents;
 import science.atlarge.graphalytics.report.result.BenchmarkMetrics;
 
 import java.nio.file.Path;
@@ -24,12 +24,12 @@ import java.nio.file.Paths;
  *
  * @author Bálint Hegyi
  */
-public class GraphblasPlatform implements Platform {
+public class UmbraPlatform implements Platform {
 
 	protected static final Logger LOG = LogManager.getLogger();
 
-	public static final String PLATFORM_NAME = "graphblas";
-	public GraphblasLoader loader;
+	public static final String PLATFORM_NAME = "umbra";
+	public UmbraLoader loader;
 
 	@Override
 	public void verifySetup() throws Exception {
@@ -38,14 +38,13 @@ public class GraphblasPlatform implements Platform {
 
 	@Override
 	public LoadedGraph loadGraph(FormattedGraph formattedGraph) throws Exception {
-		GraphblasConfiguration platformConfig = GraphblasConfiguration.parsePropertiesFile();
-		loader = new GraphblasLoader(formattedGraph, platformConfig);
+		UmbraConfiguration platformConfig = UmbraConfiguration.parsePropertiesFile();
+		loader = new UmbraLoader(formattedGraph, platformConfig);
 
 		LOG.info("Loading graph " + formattedGraph.getName());
 		Path loadedPath = Paths.get("./intermediate").resolve(formattedGraph.getName());
 
 		try {
-
 			int exitCode = loader.load(loadedPath.toString());
 			if (exitCode != 0) {
 				throw new PlatformExecutionException("GraphBLAS exited with an error code: " + exitCode);
@@ -81,7 +80,7 @@ public class GraphblasPlatform implements Platform {
 	public void startup(RunSpecification runSpecification) throws Exception {
 		BenchmarkRunSetup benchmarkRunSetup = runSpecification.getBenchmarkRunSetup();
 		Path logDir = benchmarkRunSetup.getLogDir().resolve("platform").resolve("runner.logs");
-		GraphblasCollector.startPlatformLogging(logDir);
+		UmbraCollector.startPlatformLogging(logDir);
 	}
 
 	@Override
@@ -91,12 +90,12 @@ public class GraphblasPlatform implements Platform {
 		RuntimeSetup runtimeSetup = runSpecification.getRuntimeSetup();
 
 		Algorithm algorithm = benchmarkRun.getAlgorithm();
-		GraphblasConfiguration platformConfig = GraphblasConfiguration.parsePropertiesFile();
+		UmbraConfiguration platformConfig = UmbraConfiguration.parsePropertiesFile();
 		String inputPath = runtimeSetup.getLoadedGraph().getLoadedPath();
 		String outputPath = benchmarkRunSetup.getOutputDir().resolve(benchmarkRun.getName()).toAbsolutePath().toString();
 		Graph benchmarkGraph = benchmarkRun.getGraph();
 
-		GraphblasJob job;
+		UmbraJob job;
 		switch (algorithm) {
 			case BFS:
 				job = new BreadthFirstSearchJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
@@ -142,12 +141,12 @@ public class GraphblasPlatform implements Platform {
 
 	@Override
 	public BenchmarkMetrics finalize(RunSpecification runSpecification) throws Exception {
-		GraphblasCollector.stopPlatformLogging();
+		UmbraCollector.stopPlatformLogging();
 		BenchmarkRunSetup benchmarkRunSetup = runSpecification.getBenchmarkRunSetup();
 		Path logDir = benchmarkRunSetup.getLogDir().resolve("platform");
 
 		BenchmarkMetrics metrics = new BenchmarkMetrics();
-		metrics.setProcessingTime(GraphblasCollector.collectProcessingTime(logDir));
+		metrics.setProcessingTime(UmbraCollector.collectProcessingTime(logDir));
 		return metrics;
 	}
 

@@ -1,4 +1,4 @@
-package science.atlarge.graphalytics.graphblas;
+package science.atlarge.graphalytics.umbra;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
@@ -17,21 +17,21 @@ import java.nio.file.Paths;
  *
  * @author Bálint Hegyi
  */
-public class GraphblasLoader {
+public class UmbraLoader {
 
 	private static final Logger LOG = LogManager.getLogger();
 
 	protected CommandLine commandLine;
 	protected FormattedGraph formattedGraph;
-	protected GraphblasConfiguration platformConfig;
+	protected UmbraConfiguration platformConfig;
 
 
 	/**
-	 *	Graph loader for GraphBLAS.
+	 * Graph loader for GraphBLAS.
 	 * @param formattedGraph
 	 * @param platformConfig
 	 */
-	public GraphblasLoader(FormattedGraph formattedGraph, GraphblasConfiguration platformConfig) {
+	public UmbraLoader(FormattedGraph formattedGraph, UmbraConfiguration platformConfig) {
 		this.formattedGraph = formattedGraph;
 		this.platformConfig = platformConfig;
 	}

@@ -1,4 +1,4 @@
-package science.atlarge.graphalytics.graphblas;
+package science.atlarge.graphalytics.umbra;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
@@ -13,12 +13,12 @@ import java.nio.file.Paths;
  *
  * @author Bálint Hegyi
  */
-public final class GraphblasConfiguration {
+public final class UmbraConfiguration {
 
 	protected static final Logger LOG = LogManager.getLogger();
 
 	private static final String BENCHMARK_PROPERTIES_FILE = "benchmark.properties";
-	private static final String NUM_THREADS_KEY = "platform.graphblas.num-threads";
+	private static final String NUM_THREADS_KEY = "platform.umbra.num-threads";
 
 	private String loaderPath;
 	private String unloaderPath;
@@ -27,9 +27,9 @@ public final class GraphblasConfiguration {
 	private int numThreads = 1;
 
 	/**
-	 * Creates a new GraphblasConfiguration object to capture all platform parameters that are not specific to any algorithm.
+	 * Creates a new UmbraConfiguration object to capture all platform parameters that are not specific to any algorithm.
 	 */
-	public GraphblasConfiguration(){
+	public UmbraConfiguration(){
 	}
 
 	public String getLoaderPath() {
@@ -85,9 +85,9 @@ public final class GraphblasConfiguration {
 	}
 
 
-	public static GraphblasConfiguration parsePropertiesFile() {
+	public static UmbraConfiguration parsePropertiesFile() {
 
-		GraphblasConfiguration platformConfig = new GraphblasConfiguration();
+		UmbraConfiguration platformConfig = new UmbraConfiguration();
 
 		Configuration configuration = null;
 		try {

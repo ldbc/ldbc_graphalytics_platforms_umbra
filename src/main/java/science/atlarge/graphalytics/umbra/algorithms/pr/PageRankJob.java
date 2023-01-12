@@ -1,11 +1,11 @@
-package science.atlarge.graphalytics.graphblas.algorithms.pr;
+package science.atlarge.graphalytics.umbra.algorithms.pr;
 
 import science.atlarge.graphalytics.domain.algorithms.BreadthFirstSearchParameters;
 import science.atlarge.graphalytics.domain.algorithms.PageRankParameters;
 import science.atlarge.graphalytics.domain.graph.Graph;
 import science.atlarge.graphalytics.execution.RunSpecification;
-import science.atlarge.graphalytics.graphblas.GraphblasConfiguration;
-import science.atlarge.graphalytics.graphblas.GraphblasJob;
+import science.atlarge.graphalytics.umbra.UmbraConfiguration;
+import science.atlarge.graphalytics.umbra.UmbraJob;
 
 /**
  * PageRank job implementation for GraphBLAS. This class is responsible for formatting PR-specific
@@ -13,7 +13,7 @@ import science.atlarge.graphalytics.graphblas.GraphblasJob;
  *
  * @author Bálint Hegyi
  */
-public final class PageRankJob extends GraphblasJob {
+public final class PageRankJob extends UmbraJob {
 
     /**
      * Creates a new PageRankJob object with all mandatory parameters specified.
@@ -21,7 +21,7 @@ public final class PageRankJob extends GraphblasJob {
      * @param platformConfig the platform configuration.
      * @param inputPath      the path to the input graph.
      */
-    public PageRankJob(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
+    public PageRankJob(RunSpecification runSpecification, UmbraConfiguration platformConfig,
                        String inputPath, String outputPath, Graph benchmarkGraph) {
         super(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
     }

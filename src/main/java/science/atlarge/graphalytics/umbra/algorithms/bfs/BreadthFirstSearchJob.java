@@ -1,10 +1,10 @@
-package science.atlarge.graphalytics.graphblas.algorithms.bfs;
+package science.atlarge.graphalytics.umbra.algorithms.bfs;
 
 import science.atlarge.graphalytics.domain.algorithms.BreadthFirstSearchParameters;
 import science.atlarge.graphalytics.domain.graph.Graph;
 import science.atlarge.graphalytics.execution.RunSpecification;
-import science.atlarge.graphalytics.graphblas.GraphblasConfiguration;
-import science.atlarge.graphalytics.graphblas.GraphblasJob;
+import science.atlarge.graphalytics.umbra.UmbraConfiguration;
+import science.atlarge.graphalytics.umbra.UmbraJob;
 
 /**
  * Breadth First Search job implementation for GraphBLAS. This class is responsible for formatting BFS-specific
@@ -12,14 +12,14 @@ import science.atlarge.graphalytics.graphblas.GraphblasJob;
  *
  * @author Bálint Hegyi
  */
-public final class BreadthFirstSearchJob extends GraphblasJob {
+public final class BreadthFirstSearchJob extends UmbraJob {
 
 	/**
 	 * Creates a new BreadthFirstSearchJob object with all mandatory parameters specified.
 	 *  @param platformConfig the platform configuration.
 	 * @param inputPath the path to the input graph.
 	 */
-	public BreadthFirstSearchJob(RunSpecification runSpecification, GraphblasConfiguration platformConfig,
+	public BreadthFirstSearchJob(RunSpecification runSpecification, UmbraConfiguration platformConfig,
                                  String inputPath, String outputPath, Graph benchmarkGraph) {
 		super(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 	}

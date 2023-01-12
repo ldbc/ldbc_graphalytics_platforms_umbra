@@ -1,20 +1,8 @@
-# graphalytics-duckdb
+# Umbra Graphalytics implementation
 
-[Graphalytics specification](https://ldbcouncil.org/ldbc_graphalytics_docs/graphalytics_spec.pdf)
-
-## Getting started
-
-```bash
-pip3 install -U duckdb
-```
-
-Revise the paths in the Python scripts and run.
+* [Graphalytics specification](https://ldbcouncil.org/ldbc_graphalytics_docs/graphalytics_spec.pdf)
+* [Graphalytics website](https://ldbcouncil.org/benchmarks/graphalytics/)
 
 ## axplusb
 
-Grab the `axplusby` DuckDB fork from <https://github.com/szarnyasg/duckdb/tree/axplusb> and install:
-
-```bash
-cd tools/pythonpkg
-python3 setup.py install
-```
+The `axplusb` function in DuckDB is implemented in <https://github.com/szarnyasg/duckdb/blob/axplusb/src/function/scalar/math/numeric.cpp#L193-L212>.

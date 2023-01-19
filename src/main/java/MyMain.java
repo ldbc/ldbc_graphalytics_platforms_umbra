@@ -3,7 +3,9 @@ import java.util.Properties;
 
 public class MyMain {
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        Class.forName("org.postgresql.ds.PGSimpleDataSource");
+
         Properties props = new Properties();
         String endPoint = "jdbc:postgresql://localhost:5432/";
         String databaseName = "ldbcsnb";

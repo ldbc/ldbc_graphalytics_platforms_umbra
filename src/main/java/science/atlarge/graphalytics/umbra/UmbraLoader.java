@@ -10,12 +10,14 @@ import org.apache.logging.log4j.Logger;
 import science.atlarge.graphalytics.domain.graph.FormattedGraph;
 
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.Properties;
 
 
 /**
  * Base class for graph loading in the platform driver.
- *
- * @author Bálint Hegyi
  */
 public class UmbraLoader {
 
@@ -25,9 +27,8 @@ public class UmbraLoader {
 	protected FormattedGraph formattedGraph;
 	protected UmbraConfiguration platformConfig;
 
-
 	/**
-	 * Graph loader for GraphBLAS.
+	 * Graph loader for Umbra.
 	 * @param formattedGraph
 	 * @param platformConfig
 	 */
@@ -37,31 +38,56 @@ public class UmbraLoader {
 	}
 
 	public int load(String loadedInputPath) throws Exception {
-		String loaderDir = platformConfig.getLoaderPath();
-		commandLine = new CommandLine(Paths.get(loaderDir).toFile());
+		Class.forName("org.postgresql.ds.PGSimpleDataSource");
 
-		commandLine.addArgument("--graph-name");
-		commandLine.addArgument(formattedGraph.getName());
-		commandLine.addArgument("--input-vertex-path");
-		commandLine.addArgument(formattedGraph.getVertexFilePath());
-		commandLine.addArgument("--input-edge-path");
-		commandLine.addArgument(formattedGraph.getEdgeFilePath());
-		commandLine.addArgument("--output-path");
-		commandLine.addArgument(loadedInputPath);
-		commandLine.addArgument("--directed");
-		commandLine.addArgument(formattedGraph.isDirected() ? "true" : "false");
-		commandLine.addArgument("--weighted");
-		commandLine.addArgument(formattedGraph.hasEdgeProperties() ? "true" : "false");
+		Properties props = new Properties();
+		String endPoint = "jdbc:postgresql://localhost:5432/";
+		String databaseName = "ldbcsnb";
+		String password = "mysecretpassword";
+		String userName = "postgres";
+		props.setProperty("jdbcUrl", endPoint);
+		props.setProperty("dataSource.databaseName", databaseName);
+		props.setProperty("dataSource.assumeMinServerVersion", "9.0");
+		props.setProperty("dataSource.ssl", "false");
+		props.setProperty("user", userName);
+		props.setProperty("password", password);
+		Connection conn = DriverManager.getConnection(endPoint, props);
 
+		Statement statement = conn.createStatement();
 
-		String commandString = StringUtils.toString(commandLine.toStrings(), " ");
-		LOG.info(String.format("Execute graph loader with command-line: [%s]", commandString));
+		String dataDirectory = "/data/";
+		String graphPathWithoutExtension = dataDirectory + formattedGraph.getGraph().getName();
 
-		Executor executor = new DefaultExecutor();
-		executor.setStreamHandler(new PumpStreamHandler(System.out, System.err));
-		executor.setExitValue(0);
+		// set schema strings based on whether the graph is weighted
+		boolean weighted = formattedGraph.getGraph().getSourceGraph().hasEdgeProperties();
+		String weightAttributeWithoutType = weighted ? ", weight"        : "";
+		String weightAttributeWithType    = weighted ? ", weight FLOAT" : "";
 
-		return executor.execute(commandLine);
+		// cleanup
+		statement.executeUpdate(String.format("DROP VIEW  IF EXISTS u;"));
+		statement.executeUpdate(String.format("DROP TABLE IF EXISTS u;"));
+		statement.executeUpdate(String.format("DROP TABLE IF EXISTS v;"));
+		statement.executeUpdate(String.format("DROP TABLE IF EXISTS e;"));
+
+		// create tables
+		statement.executeUpdate(String.format("CREATE TABLE v (id INTEGER);"));
+		statement.executeUpdate(String.format("CREATE TABLE e (source INTEGER, target INTEGER%s);", weightAttributeWithType));
+
+		// load tables
+		statement.executeUpdate(String.format("COPY v (id) FROM '%s.v' (DELIMITER ' ', FORMAT csv)", graphPathWithoutExtension));
+		statement.executeUpdate(String.format("COPY e (source, target%s) FROM '%s.e' (DELIMITER ' ', FORMAT csv)", weightAttributeWithoutType, graphPathWithoutExtension));
+
+		// create undirected variant
+		if (formattedGraph.isDirected()) {
+			statement.executeUpdate(String.format("CREATE TABLE u (source INTEGER, target INTEGER);"));
+			statement.executeUpdate(String.format("INSERT INTO u SELECT target, source FROM e;"));
+			statement.executeUpdate(String.format("INSERT INTO u SELECT source, target FROM e;"));
+		} else {
+			statement.executeUpdate(String.format("INSERT INTO e SELECT target, source%s FROM e;", weightAttributeWithoutType));
+			statement.executeUpdate(String.format("CREATE VIEW u AS SELECT source, target FROM e;"));
+		}
+
+		return 0;
 	}
 
 	public int unload(String loadedInputPath) throws Exception {

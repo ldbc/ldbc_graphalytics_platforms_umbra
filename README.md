@@ -9,6 +9,19 @@ To set up a Postgres instance, run e.g.:
 
 ```bash
 export POSTGRES_DATA_DIR=~/graphs
-scripts/start.sh
+scripts/start-postgres.sh
 ```
 
+## Testing
+
+To test the current state of your codebase, create a new commit:
+
+```bash
+git commit -am "WIP"
+```
+
+Then, run the following comment. :warning: This amend the last commit, so ensure that you have a `WIP` commit on top of your commit tree.
+
+```bash
+scripts/package-and-run-benchmark.sh
+```

@@ -8,10 +8,8 @@ import science.atlarge.graphalytics.umbra.UmbraConfiguration;
 import science.atlarge.graphalytics.umbra.UmbraJob;
 
 /**
- * PageRank job implementation for GraphBLAS. This class is responsible for formatting PR-specific
+ * PageRank job implementation for Umbra. This class is responsible for formatting PR-specific
  * arguments to be passed to the platform executable, and does not include the implementation of the algorithm.
- *
- * @author Bálint Hegyi
  */
 public final class PageRankJob extends UmbraJob {
 

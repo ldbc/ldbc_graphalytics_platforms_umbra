@@ -7,16 +7,14 @@ import science.atlarge.graphalytics.umbra.UmbraConfiguration;
 import science.atlarge.graphalytics.umbra.UmbraJob;
 
 /**
- * Single Source Shortest Path job implementation for GraphBLAS. This class is responsible for formatting SSSP-specific
+ * Single Source Shortest Path job implementation for Umbra. This class is responsible for formatting SSSP-specific
  * arguments to be passed to the platform executable, and does not include the implementation of the algorithm.
- *
- * @author Bálint Hegyi
  */
 public final class SingleSourceShortestPathJob extends UmbraJob {
 
 	/**
 	 * Creates a new SingleSourceShortestPathJob object with all mandatory parameters specified.
-	 *  @param platformConfig the platform configuration.
+	 * @param platformConfig the platform configuration.
 	 * @param inputPath the path to the input graph.
 	 */
 	public SingleSourceShortestPathJob(RunSpecification runSpecification, UmbraConfiguration platformConfig,

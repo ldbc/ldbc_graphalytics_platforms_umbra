@@ -6,16 +6,14 @@ import science.atlarge.graphalytics.umbra.UmbraConfiguration;
 import science.atlarge.graphalytics.umbra.UmbraJob;
 
 /**
- * Local Clustering Coefficient job implementation for GraphBLAS. This class is responsible for formatting LCC-specific
+ * Local Clustering Coefficient job implementation for Umbra. This class is responsible for formatting LCC-specific
  * arguments to be passed to the platform executable, and does not include the implementation of the algorithm.
- *
- * @author Bálint Hegyi
  */
 public final class LocalClusteringCoefficientJob extends UmbraJob {
 
 	/**
 	 * Creates a new LocalClusteringCoefficientJob object with all mandatory parameters specified.
-	 *  @param platformConfig the platform configuration.
+	 * @param platformConfig the platform configuration.
 	 * @param inputPath the path to the input graph.
 	 */
 	public LocalClusteringCoefficientJob(RunSpecification runSpecification, UmbraConfiguration platformConfig,

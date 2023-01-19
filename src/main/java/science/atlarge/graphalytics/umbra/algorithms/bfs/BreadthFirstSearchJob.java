@@ -7,16 +7,14 @@ import science.atlarge.graphalytics.umbra.UmbraConfiguration;
 import science.atlarge.graphalytics.umbra.UmbraJob;
 
 /**
- * Breadth First Search job implementation for GraphBLAS. This class is responsible for formatting BFS-specific
+ * Breadth First Search job implementation for Umbra. This class is responsible for formatting BFS-specific
  * arguments to be passed to the platform executable, and does not include the implementation of the algorithm.
- *
- * @author Bálint Hegyi
  */
 public final class BreadthFirstSearchJob extends UmbraJob {
 
 	/**
 	 * Creates a new BreadthFirstSearchJob object with all mandatory parameters specified.
-	 *  @param platformConfig the platform configuration.
+	 * @param platformConfig the platform configuration.
 	 * @param inputPath the path to the input graph.
 	 */
 	public BreadthFirstSearchJob(RunSpecification runSpecification, UmbraConfiguration platformConfig,

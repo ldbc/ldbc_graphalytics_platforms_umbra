@@ -10,8 +10,6 @@ import java.nio.file.Paths;
 
 /**
  * Collection of configurable platform options.
- *
- * @author Bálint Hegyi
  */
 public final class UmbraConfiguration {
 

@@ -17,8 +17,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  *
- *
- * @author Bálint Hegyi
  */
 public class UmbraCollector {
 

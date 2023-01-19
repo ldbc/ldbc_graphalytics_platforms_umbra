@@ -8,11 +8,8 @@ import science.atlarge.graphalytics.umbra.UmbraConfiguration;
 import science.atlarge.graphalytics.umbra.UmbraJob;
 
 /**
- * Community Detection by job implementation for GraphBLAS. This class is responsible for formatting CDLP-specific
+ * Community Detection by job implementation for Umbra. This class is responsible for formatting CDLP-specific
  * arguments to be passed to the platform executable, and does not include the implementation of the algorithm.
- *
- * @author Bálint Hegyi
- * @author Gábor Szárnyas
  */
 public final class CommunityDetectionLPJob extends UmbraJob {
 

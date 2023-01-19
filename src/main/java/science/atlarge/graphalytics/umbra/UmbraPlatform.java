@@ -20,9 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * GraphBLAS platform driver for the Graphalytics benchmark.
- *
- * @author Bálint Hegyi
+ * Umbra platform driver for the Graphalytics benchmark.
  */
 public class UmbraPlatform implements Platform {
 
@@ -47,10 +45,10 @@ public class UmbraPlatform implements Platform {
 		try {
 			int exitCode = loader.load(loadedPath.toString());
 			if (exitCode != 0) {
-				throw new PlatformExecutionException("GraphBLAS exited with an error code: " + exitCode);
+				throw new PlatformExecutionException("Umbra exited with an error code: " + exitCode);
 			}
 		} catch (Exception e) {
-			throw new PlatformExecutionException("Failed to load a GraphBLAS dataset.", e);
+			throw new PlatformExecutionException("Failed to load a Umbra dataset.", e);
 		}
 		LOG.info("Loaded graph " + formattedGraph.getName());
 		return new LoadedGraph(formattedGraph, loadedPath.toString());
@@ -63,10 +61,10 @@ public class UmbraPlatform implements Platform {
 
 			int exitCode = loader.unload(loadedGraph.getLoadedPath());
 			if (exitCode != 0) {
-				throw new PlatformExecutionException("GraphBLAS exited with an error code: " + exitCode);
+				throw new PlatformExecutionException("Umbra exited with an error code: " + exitCode);
 			}
 		} catch (Exception e) {
-			throw new PlatformExecutionException("Failed to unload a GraphBLAS dataset.", e);
+			throw new PlatformExecutionException("Failed to unload a Umbra dataset.", e);
 		}
 		LOG.info("Unloaded graph " +  loadedGraph.getFormattedGraph().getName());
 	}
@@ -127,10 +125,10 @@ public class UmbraPlatform implements Platform {
 
 			int exitCode = job.execute();
 			if (exitCode != 0) {
-				throw new PlatformExecutionException("GraphBLAS exited with an error code: " + exitCode);
+				throw new PlatformExecutionException("Umbra exited with an error code: " + exitCode);
 			}
 		} catch (Exception e) {
-			throw new PlatformExecutionException("Failed to execute a GraphBLAS job.", e);
+			throw new PlatformExecutionException("Failed to execute a Umbra job.", e);
 		}
 
 		LOG.info("Executed benchmark with algorithm \"{}\" on graph \"{}\".",

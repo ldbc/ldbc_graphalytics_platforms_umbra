@@ -23,8 +23,6 @@ import java.util.Properties;
 /**
  * Base class for all jobs in the platform driver. Configures and executes a platform job using the parameters
  * and executable specified by the subclass for a specific algorithm.
- *
- * @author Bálint Hegyi
  */
 public abstract class UmbraJob {
 

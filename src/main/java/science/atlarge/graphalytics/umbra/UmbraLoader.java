@@ -5,15 +5,12 @@ import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.exec.util.StringUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import science.atlarge.graphalytics.domain.graph.FormattedGraph;
 
 import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-import java.util.Properties;
 
 
 /**
@@ -38,56 +35,41 @@ public class UmbraLoader {
 	}
 
 	public int load(String loadedInputPath) throws Exception {
-		Class.forName("org.postgresql.ds.PGSimpleDataSource");
+		String loaderDir = platformConfig.getLoaderPath();
+		commandLine = new CommandLine(Paths.get(loaderDir).toFile());
 
-		Properties props = new Properties();
-		String endPoint = "jdbc:postgresql://localhost:5432/";
-		String databaseName = "ldbcsnb";
-		String password = "mysecretpassword";
-		String userName = "postgres";
-		props.setProperty("jdbcUrl", endPoint);
-		props.setProperty("dataSource.databaseName", databaseName);
-		props.setProperty("dataSource.assumeMinServerVersion", "9.0");
-		props.setProperty("dataSource.ssl", "false");
-		props.setProperty("user", userName);
-		props.setProperty("password", password);
-		Connection conn = DriverManager.getConnection(endPoint, props);
+		String inputDirectory = FilenameUtils.getFullPath(formattedGraph.getVertexFilePath());
 
-		Statement statement = conn.createStatement();
+		commandLine.addArgument("--graph-name");
+		//commandLine.addArgument(formattedGraph.getName());
+		commandLine.addArgument(formattedGraph.getGraph().getName());
 
-		String dataDirectory = "/data/";
-		String graphPathWithoutExtension = dataDirectory + formattedGraph.getGraph().getName();
+		commandLine.addArgument("--input-directory");
+		commandLine.addArgument(inputDirectory);
 
-		// set schema strings based on whether the graph is weighted
-		boolean weighted = formattedGraph.getGraph().getSourceGraph().hasEdgeProperties();
-		String weightAttributeWithoutType = weighted ? ", weight"        : "";
-		String weightAttributeWithType    = weighted ? ", weight FLOAT" : "";
+		commandLine.addArgument("--input-vertex-path");
+		commandLine.addArgument(formattedGraph.getVertexFilePath());
 
-		// cleanup
-		statement.executeUpdate(String.format("DROP VIEW  IF EXISTS u;"));
-		statement.executeUpdate(String.format("DROP TABLE IF EXISTS u;"));
-		statement.executeUpdate(String.format("DROP TABLE IF EXISTS v;"));
-		statement.executeUpdate(String.format("DROP TABLE IF EXISTS e;"));
+		commandLine.addArgument("--input-edge-path");
+		commandLine.addArgument(formattedGraph.getEdgeFilePath());
 
-		// create tables
-		statement.executeUpdate(String.format("CREATE TABLE v (id INTEGER);"));
-		statement.executeUpdate(String.format("CREATE TABLE e (source INTEGER, target INTEGER%s);", weightAttributeWithType));
+		commandLine.addArgument("--output-path");
+		commandLine.addArgument(loadedInputPath);
 
-		// load tables
-		statement.executeUpdate(String.format("COPY v (id) FROM '%s.v' (DELIMITER ' ', FORMAT csv)", graphPathWithoutExtension));
-		statement.executeUpdate(String.format("COPY e (source, target%s) FROM '%s.e' (DELIMITER ' ', FORMAT csv)", weightAttributeWithoutType, graphPathWithoutExtension));
+		commandLine.addArgument("--directed");
+		commandLine.addArgument(formattedGraph.isDirected() ? "true" : "false");
 
-		// create undirected variant
-		if (formattedGraph.isDirected()) {
-			statement.executeUpdate(String.format("CREATE TABLE u (source INTEGER, target INTEGER);"));
-			statement.executeUpdate(String.format("INSERT INTO u SELECT target, source FROM e;"));
-			statement.executeUpdate(String.format("INSERT INTO u SELECT source, target FROM e;"));
-		} else {
-			statement.executeUpdate(String.format("INSERT INTO e SELECT target, source%s FROM e;", weightAttributeWithoutType));
-			statement.executeUpdate(String.format("CREATE VIEW u AS SELECT source, target FROM e;"));
-		}
+		commandLine.addArgument("--weighted");
+		commandLine.addArgument(formattedGraph.hasEdgeProperties() ? "true" : "false");
 
-		return 0;
+		String commandString = StringUtils.toString(commandLine.toStrings(), " ");
+		LOG.info(String.format("Execute graph loader with command-line: [%s]", commandString));
+
+		Executor executor = new DefaultExecutor();
+		executor.setStreamHandler(new PumpStreamHandler(System.out, System.err));
+		executor.setExitValue(0);
+
+		return executor.execute(commandLine);
 	}
 
 	public int unload(String loadedInputPath) throws Exception {

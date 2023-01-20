@@ -3,9 +3,9 @@
 set -e
 
 if [ "$(uname)" == "Darwin" ]; then
-  rootdir=$(dirname $(greadlink -f ${BASH_SOURCE[0]}))/../..
+  ROOTDIR=$(dirname $(greadlink -f ${BASH_SOURCE[0]}))/../..
 else
-  rootdir=$(dirname $(readlink -f ${BASH_SOURCE[0]}))/../..
+  ROOTDIR=$(dirname $(readlink -f ${BASH_SOURCE[0]}))/../..
 fi
 
 # Parse commandline instructions (provided by Graphalytics).
@@ -64,6 +64,10 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
       NUM_VERTICES="$value"
       shift;;
 
+    --graph-name)
+      GRAPH_NAME="$value"
+      shift;;
+
     *)
       echo "Error: invalid option: " "$key"
       exit 1
@@ -72,11 +76,11 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
   shift
 done
 
-case $ALGORITHM in
+case ${ALGORITHM} in
 
      bfs)
-       COMMAND="$rootdir/bin/exe/$ALGORITHM \
-         --binary true \
+       COMMAND="${ROOTDIR}/bin/exe/${ALGORITHM}.py \
+         --graph-name $GRAPH_NAME \
          --jobid $JOB_ID \
          --dataset $INPUT_PATH \
          --output $OUTPUT_PATH \
@@ -87,8 +91,8 @@ case $ALGORITHM in
        ;;
 
      wcc)
-       COMMAND="$rootdir/bin/exe/$ALGORITHM \
-         --binary true \
+       COMMAND="${ROOTDIR}/bin/exe/${ALGORITHM}.py \
+         --graph-name $GRAPH_NAME \
          --jobid $JOB_ID \
          --dataset $INPUT_PATH \
          --output $OUTPUT_PATH \
@@ -98,8 +102,8 @@ case $ALGORITHM in
        ;;
 
      pr)
-       COMMAND="$rootdir/bin/exe/$ALGORITHM \
-         --binary true \
+       COMMAND="${ROOTDIR}/bin/exe/${ALGORITHM}.py \
+         --graph-name $GRAPH_NAME \
          --jobid $JOB_ID \
          --dataset $INPUT_PATH \
          --output $OUTPUT_PATH \
@@ -111,8 +115,8 @@ case $ALGORITHM in
        ;;
 
      cdlp)
-       COMMAND="$rootdir/bin/exe/$ALGORITHM \
-         --binary true \
+       COMMAND="${ROOTDIR}/bin/exe/${ALGORITHM}.py \
+         --graph-name $GRAPH_NAME \
          --jobid $JOB_ID \
          --dataset $INPUT_PATH \
          --output $OUTPUT_PATH \
@@ -123,8 +127,8 @@ case $ALGORITHM in
        ;;
 
      lcc)
-       COMMAND="$rootdir/bin/exe/$ALGORITHM \
-         --binary true \
+       COMMAND="${ROOTDIR}/bin/exe/${ALGORITHM}.py \
+         --graph-name $GRAPH_NAME \
          --jobid $JOB_ID \
          --dataset $INPUT_PATH \
          --output $OUTPUT_PATH \
@@ -134,8 +138,8 @@ case $ALGORITHM in
        ;;
 
      sssp)
-       COMMAND="$rootdir/bin/exe/$ALGORITHM
-         --binary true \
+       COMMAND="${ROOTDIR}/bin/exe/${ALGORITHM}.py
+         --graph-name $GRAPH_NAME \
          --jobid $JOB_ID \
          --dataset $INPUT_PATH \
          --output $OUTPUT_PATH \
@@ -146,7 +150,7 @@ case $ALGORITHM in
        ;;
 
      *)
-       echo "Error: algorithm $ALGORITHM not defined."
+       echo "Error: algorithm ${ALGORITHM} not defined."
        exit 1
        ;;
 esac
@@ -154,5 +158,5 @@ esac
 
 echo "Executing platform job" "$COMMAND"
 
-$COMMAND & echo $! > $LOG_PATH/executable.pid
+$COMMAND & echo $! > ${LOG_PATH}/executable.pid
 wait $!

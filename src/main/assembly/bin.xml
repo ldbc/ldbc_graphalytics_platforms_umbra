@@ -27,6 +27,13 @@
 			<directory>${project.basedir}/src</directory>
 			<outputDirectory>src</outputDirectory>
 		</fileSet>
+		<fileSet><!--Scratch directory-->
+			<directory>${project.basedir}</directory>
+			<outputDirectory>.</outputDirectory>
+			<includes>
+				<include>scratch/**</include>
+			</includes>
+		</fileSet>
 		<fileSet><!--Platform script files-->
 			<directory>${project.basedir}</directory>
 			<outputDirectory>.</outputDirectory>

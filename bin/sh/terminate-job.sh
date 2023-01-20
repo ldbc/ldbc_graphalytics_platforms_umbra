@@ -33,3 +33,4 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
 done
 
 # Terminating is not required
+${ROOTDIR}/bin/scripts/stop-postgres.sh

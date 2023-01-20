@@ -3,9 +3,9 @@
 set -e
 
 if [ "$(uname)" == "Darwin" ]; then
-  rootdir=$(dirname $(greadlink -f ${BASH_SOURCE[0]}))/../..
+  ROOTDIR=$(dirname $(greadlink -f ${BASH_SOURCE[0]}))/../..
 else
-  rootdir=$(dirname $(readlink -f ${BASH_SOURCE[0]}))/../..
+  ROOTDIR=$(dirname $(readlink -f ${BASH_SOURCE[0]}))/../..
 fi
 
 # Parse commandline instructions (provided by Graphalytics).
@@ -17,7 +17,11 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
   case ${key} in
 
     --graph-name)
-      # not used
+      GRAPH_NAME="$value"
+      shift;;
+
+    --input-directory)
+      INPUT_DIRECTORY="$value"
       shift;;
 
     --input-vertex-path)
@@ -49,3 +53,11 @@ while [[ $# -gt 1 ]] # Parse two arguments: [--key value] or [-k value]
 done
 
 mkdir -p ${OUTPUT_PATH}
+
+export POSTGRES_INPUT_DATA_DIR=${INPUT_DIRECTORY}
+${ROOTDIR}/bin/scripts/start-postgres.sh
+
+${ROOTDIR}/bin/exe/load.py \
+   --graph-name $GRAPH_NAME \
+   --directed $DIRECTED \
+   --weighted $WEIGHTED

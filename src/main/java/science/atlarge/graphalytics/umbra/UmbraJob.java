@@ -86,7 +86,7 @@ public abstract class UmbraJob {
 
 		appendBenchmarkParameters(jobId, logDir);
 		appendAlgorithmParameters();
-		appendDatasetParameters(inputPath, outputPath);
+		appendDatasetParameters(inputPath, outputPath, benchmarkGraph.getSourceGraph().getGraph().getName());
 		appendPlatformConfigurations(numThreads);
 
 		String commandString = StringUtils.toString(commandLine.toStrings(), " ");
@@ -116,12 +116,15 @@ public abstract class UmbraJob {
 	/**
 	 * Appends the dataset-specific parameters for the executable to a CommandLine object.
 	 */
-	private void appendDatasetParameters(String inputPath, String outputPath) {
+	private void appendDatasetParameters(String inputPath, String outputPath, String graphName) {
 		commandLine.addArgument("--input-path");
 		commandLine.addArgument(Paths.get(inputPath).toAbsolutePath().toString());
 
 		commandLine.addArgument("--output-path");
 		commandLine.addArgument(Paths.get(outputPath).toAbsolutePath().toString());
+
+		commandLine.addArgument("--graph-name");
+		commandLine.addArgument(graphName);
 	}
 
 

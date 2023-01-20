@@ -8,5 +8,7 @@ cd ..
 
 . scripts/vars.sh
 
+echo "Creating Postgres database: ${POSTGRES_DATABASE}"
+
 docker exec -i ${POSTGRES_CONTAINER_NAME} dropdb --if-exists ${POSTGRES_DATABASE} --username=${POSTGRES_USER}
 docker exec -i ${POSTGRES_CONTAINER_NAME} createdb ${POSTGRES_DATABASE} --username=${POSTGRES_USER} --template template0 --locale "POSIX"

@@ -18,6 +18,11 @@ import science.atlarge.graphalytics.report.result.BenchmarkMetrics;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
+
 
 /**
  * Umbra platform driver for the Graphalytics benchmark.
@@ -28,15 +33,15 @@ public class UmbraPlatform implements Platform {
 
 	public static final String PLATFORM_NAME = "umbra";
 	public UmbraLoader loader;
+	protected Connection dbConnection;
 
 	@Override
-	public void verifySetup() throws Exception {
-
-	}
+	public void verifySetup() throws Exception { }
 
 	@Override
 	public LoadedGraph loadGraph(FormattedGraph formattedGraph) throws Exception {
 		UmbraConfiguration platformConfig = UmbraConfiguration.parsePropertiesFile();
+
 		loader = new UmbraLoader(formattedGraph, platformConfig);
 
 		LOG.info("Loading graph " + formattedGraph.getName());
@@ -122,10 +127,9 @@ public class UmbraPlatform implements Platform {
 				benchmarkRun.getFormattedGraph().getName());
 
 		try {
-
 			int exitCode = job.execute();
 			if (exitCode != 0) {
-				throw new PlatformExecutionException("Umbra exited with an error code: " + exitCode);
+				throw new PlatformExecutionException("Umbra job exited with an error code: " + exitCode);
 			}
 		} catch (Exception e) {
 			throw new PlatformExecutionException("Failed to execute a Umbra job.", e);

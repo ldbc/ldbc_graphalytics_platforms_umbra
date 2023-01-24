@@ -31,6 +31,5 @@ public final class BreadthFirstSearchJob extends UmbraJob {
 				(BreadthFirstSearchParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
 		commandLine.addArgument("--source-vertex");
 		commandLine.addArgument(Long.toString(params.getSourceVertex()));
-
 	}
 }

@@ -31,6 +31,5 @@ public final class SingleSourceShortestPathJob extends UmbraJob {
 				(SingleSourceShortestPathsParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
 		commandLine.addArgument("--source-vertex");
 		commandLine.addArgument(Long.toString(params.getSourceVertex()));
-
 	}
 }

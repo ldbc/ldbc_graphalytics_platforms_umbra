@@ -25,15 +25,19 @@ public final class PageRankJob extends UmbraJob {
     }
 
     @Override
-    protected void appendAlgorithmParameters() {
-        commandLine.addArgument("--algorithm");
-        commandLine.addArgument("pr");
+    public void execute() {
 
-        PageRankParameters params =
-                (PageRankParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
-        commandLine.addArgument("--damping-factor");
-        commandLine.addArgument(Float.toString(params.getDampingFactor()));
-        commandLine.addArgument("--max-iteration");
-        commandLine.addArgument(Integer.toString(params.getNumberOfIterations()));
     }
+
+//    protected void appendAlgorithmParameters() {
+//        commandLine.addArgument("--algorithm");
+//        commandLine.addArgument("pr");
+//
+//        PageRankParameters params =
+//                (PageRankParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
+//        commandLine.addArgument("--damping-factor");
+//        commandLine.addArgument(Float.toString(params.getDampingFactor()));
+//        commandLine.addArgument("--max-iteration");
+//        commandLine.addArgument(Integer.toString(params.getNumberOfIterations()));
+//    }
 }

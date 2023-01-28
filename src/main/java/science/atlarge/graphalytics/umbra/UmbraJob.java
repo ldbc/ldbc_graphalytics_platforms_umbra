@@ -26,7 +26,7 @@ import java.util.Properties;
  */
 public abstract class UmbraJob {
 
-	private static final Logger LOG = LogManager.getLogger();
+	protected static final Logger LOG = LogManager.getLogger();
 
 	protected CommandLine commandLine;
     private final String jobId;
@@ -62,87 +62,15 @@ public abstract class UmbraJob {
 		this.benchmarkGraph = benchmarkGraph;
 	}
 
-
 	/**
 	 * Executes the platform job with the pre-defined parameters.
 	 *
 	 * @return the exit code
 	 * @throws IOException if the platform failed to run
 	 */
-	public int execute() throws Exception {
-		String executableDir = platformConfig.getExecutablePath();
-		commandLine = new CommandLine(Paths.get(executableDir).toFile());
+	public abstract void execute() throws Exception;
 
-		// List of benchmark parameters.
-		String jobId = getJobId();
-		String logDir = getLogPath();
-
-		// List of dataset parameters.
-		String inputPath = getInputPath();
-		String outputPath = getOutputPath();
-
-		// List of platform parameters.
-		int numThreads = platformConfig.getNumThreads();
-
-		appendBenchmarkParameters(jobId, logDir);
-		appendAlgorithmParameters();
-		appendDatasetParameters(inputPath, outputPath, benchmarkGraph.getSourceGraph().getGraph().getName());
-		appendPlatformConfigurations(numThreads);
-
-		String commandString = StringUtils.toString(commandLine.toStrings(), " ");
-		LOG.info(String.format("Execute benchmark job with command-line: [%s]", commandString));
-
-		Executor executor = new DefaultExecutor();
-		executor.setStreamHandler(new PumpStreamHandler(System.out, System.err));
-		executor.setExitValue(0);
-		return executor.execute(commandLine);
-	}
-
-
-	/**
-	 * Appends the benchmark-specific parameters for the executable to a CommandLine object.
-	 */
-	private void appendBenchmarkParameters(String jobId, String logPath) {
-		commandLine.addArgument("--job-id");
-		commandLine.addArgument(jobId);
-
-		commandLine.addArgument("--log-path");
-		commandLine.addArgument(logPath);
-
-		commandLine.addArgument("--directed");
-		commandLine.addArgument(Boolean.toString(benchmarkGraph.isDirected()));
-	}
-
-	/**
-	 * Appends the dataset-specific parameters for the executable to a CommandLine object.
-	 */
-	private void appendDatasetParameters(String inputPath, String outputPath, String graphName) {
-		commandLine.addArgument("--input-path");
-		commandLine.addArgument(Paths.get(inputPath).toAbsolutePath().toString());
-
-		commandLine.addArgument("--output-path");
-		commandLine.addArgument(Paths.get(outputPath).toAbsolutePath().toString());
-
-		commandLine.addArgument("--graph-name");
-		commandLine.addArgument(graphName);
-	}
-
-
-	/**
-	 * Appends the platform-specific parameters for the executable to a CommandLine object.
-	 */
-	private void appendPlatformConfigurations(int numThreads) {
-		commandLine.addArgument("--num-threads");
-		commandLine.addArgument(String.valueOf(numThreads));
-	}
-
-
-	/**
-	 * Appends the algorithm-specific parameters for the executable to a CommandLine object.
-	 */
-	protected abstract void appendAlgorithmParameters();
-
-	private String getJobId() {
+	protected String getJobId() {
 		return jobId;
 	}
 
@@ -150,11 +78,11 @@ public abstract class UmbraJob {
 		return logPath;
 	}
 
-	private String getInputPath() {
+	protected String getInputPath() {
 		return inputPath;
 	}
 
-	private String getOutputPath() {
+	protected String getOutputPath() {
 		return outputPath;
 	}
 

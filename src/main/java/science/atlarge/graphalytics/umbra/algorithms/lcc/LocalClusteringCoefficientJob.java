@@ -6,7 +6,7 @@ import science.atlarge.graphalytics.umbra.UmbraConfiguration;
 import science.atlarge.graphalytics.umbra.UmbraJob;
 
 /**
- * Local Clustering Coefficient job implementation for Umbra. This class is responsible for formatting LCC-specific
+ * Local Clustering Coefficient job implementatione for Umbra. This class is responsible for formatting LCC-specific
  * arguments to be passed to the platform executable, and does not include the implementation of the algorithm.
  */
 public final class LocalClusteringCoefficientJob extends UmbraJob {
@@ -14,7 +14,7 @@ public final class LocalClusteringCoefficientJob extends UmbraJob {
 	/**
 	 * Creates a new LocalClusteringCoefficientJob object with all mandatory parameters specified.
 	 * @param platformConfig the platform configuration.
-	 * @param inputPath the path to the input graph.
+	 * @param inputPath th path to the input graph.
 	 */
 	public LocalClusteringCoefficientJob(RunSpecification runSpecification, UmbraConfiguration platformConfig,
 										 String inputPath, String outputPath, Graph benchmarkGraph) {
@@ -22,8 +22,8 @@ public final class LocalClusteringCoefficientJob extends UmbraJob {
 	}
 
 	@Override
-	protected void appendAlgorithmParameters() {
-		commandLine.addArgument("--algorithm");
-		commandLine.addArgument("lcc");
+	public void execute() {
+
 	}
+
 }

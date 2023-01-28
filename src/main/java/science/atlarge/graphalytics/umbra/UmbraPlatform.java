@@ -118,12 +118,9 @@ public class UmbraPlatform implements Platform {
 				benchmarkRun.getFormattedGraph().getName());
 
 		try {
-			int exitCode = job.execute();
-			if (exitCode != 0) {
-				throw new PlatformExecutionException("Umbra job exited with an error code: " + exitCode);
-			}
+			job.execute();
 		} catch (Exception e) {
-			throw new PlatformExecutionException("Failed to execute a Umbra job.", e);
+			throw new PlatformExecutionException("Failed to execute an Umbra job.", e);
 		}
 
 		LOG.info("Executed benchmark with algorithm \"{}\" on graph \"{}\".",

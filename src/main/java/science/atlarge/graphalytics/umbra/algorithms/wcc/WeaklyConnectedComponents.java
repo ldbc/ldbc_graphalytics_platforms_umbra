@@ -22,8 +22,8 @@ public final class WeaklyConnectedComponents extends UmbraJob {
 	}
 
 	@Override
-	protected void appendAlgorithmParameters() {
-		commandLine.addArgument("--algorithm");
-		commandLine.addArgument("wcc");
+	public void execute() {
+
 	}
+
 }

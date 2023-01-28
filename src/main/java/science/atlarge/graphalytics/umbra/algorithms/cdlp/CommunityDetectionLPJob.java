@@ -24,13 +24,18 @@ public final class CommunityDetectionLPJob extends UmbraJob {
 	}
 
 	@Override
-	protected void appendAlgorithmParameters() {
-		commandLine.addArgument("--algorithm");
-		commandLine.addArgument("cdlp");
+	public void execute() {
 
-		CommunityDetectionLPParameters params =
-				(CommunityDetectionLPParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
-		commandLine.addArgument("--max-iteration");
-		commandLine.addArgument(Integer.toString(params.getMaxIterations()));
 	}
+
+//	@Override
+//	protected void appendAlgorithmParameters() {
+//		commandLine.addArgument("--algorithm");
+//		commandLine.addArgument("cdlp");
+//
+//		CommunityDetectionLPParameters params =
+//				(CommunityDetectionLPParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
+//		commandLine.addArgument("--max-iteration");
+//		commandLine.addArgument(Integer.toString(params.getMaxIterations()));
+//	}
 }

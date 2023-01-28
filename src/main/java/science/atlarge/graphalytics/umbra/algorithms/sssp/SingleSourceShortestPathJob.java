@@ -23,13 +23,17 @@ public final class SingleSourceShortestPathJob extends UmbraJob {
 	}
 
 	@Override
-	protected void appendAlgorithmParameters() {
-		commandLine.addArgument("--algorithm");
-		commandLine.addArgument("sssp");
+	public void execute() {
 
-		SingleSourceShortestPathsParameters params =
-				(SingleSourceShortestPathsParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
-		commandLine.addArgument("--source-vertex");
-		commandLine.addArgument(Long.toString(params.getSourceVertex()));
 	}
+
+//	protected void appendAlgorithmParameters() {
+//		commandLine.addArgument("--algorithm");
+//		commandLine.addArgument("sssp");
+//
+//		SingleSourceShortestPathsParameters params =
+//				(SingleSourceShortestPathsParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
+//		commandLine.addArgument("--source-vertex");
+//		commandLine.addArgument(Long.toString(params.getSourceVertex()));
+//	}
 }

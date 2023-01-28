@@ -6,6 +6,9 @@ import science.atlarge.graphalytics.execution.RunSpecification;
 import science.atlarge.graphalytics.umbra.UmbraConfiguration;
 import science.atlarge.graphalytics.umbra.UmbraJob;
 
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  * Single Source Shortest Path job implementation for Umbra. This class is responsible for formatting SSSP-specific
  * arguments to be passed to the platform executable, and does not include the implementation of the algorithm.
@@ -20,6 +23,11 @@ public final class SingleSourceShortestPathJob extends UmbraJob {
 	public SingleSourceShortestPathJob(RunSpecification runSpecification, UmbraConfiguration platformConfig,
 									   String inputPath, String outputPath, Graph benchmarkGraph) {
 		super(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+	}
+
+	@Override
+	protected void cleanup(Statement statement) throws SQLException {
+
 	}
 
 	@Override

@@ -5,6 +5,9 @@ import science.atlarge.graphalytics.execution.RunSpecification;
 import science.atlarge.graphalytics.umbra.UmbraConfiguration;
 import science.atlarge.graphalytics.umbra.UmbraJob;
 
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  * Breadth First Search job implementation for Umbra. This class is responsible for formatting BFS-specific
  * arguments to be passed to the platform executable, and does not include the implementation of the algorithm.
@@ -19,6 +22,11 @@ public final class WeaklyConnectedComponents extends UmbraJob {
 	public WeaklyConnectedComponents(RunSpecification runSpecification, UmbraConfiguration platformConfig,
                                      String inputPath, String outputPath, Graph benchmarkGraph) {
 		super(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+	}
+
+	@Override
+	protected void cleanup(Statement statement) throws SQLException {
+
 	}
 
 	@Override

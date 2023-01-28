@@ -34,6 +34,14 @@ public final class BreadthFirstSearchJob extends UmbraJob {
 	}
 
 	@Override
+	protected void cleanup(Statement statement) throws SQLException {
+		statement.executeUpdate("DROP TABLE IF EXISTS bfs");
+		statement.executeUpdate("DROP TABLE IF EXISTS frontier");
+		statement.executeUpdate("DROP TABLE IF EXISTS next");
+		statement.executeUpdate("DROP TABLE IF EXISTS seen");
+	}
+
+	@Override
 	public void execute() throws SQLException, ClassNotFoundException, IOException {
 		BreadthFirstSearchParameters params = (BreadthFirstSearchParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
 		long sourceVertex = params.getSourceVertex();
@@ -41,10 +49,7 @@ public final class BreadthFirstSearchJob extends UmbraJob {
 		Connection conn = UmbraUtil.getConnection();
 		Statement statement = conn.createStatement();
 
-		statement.executeUpdate("DROP TABLE IF EXISTS frontier");
-		statement.executeUpdate("DROP TABLE IF EXISTS next");
-		statement.executeUpdate("DROP TABLE IF EXISTS seen");
-		statement.executeUpdate("DROP TABLE IF EXISTS bfs");
+		cleanup(statement);
 
 		LOG.info(String.format("Processing starts at: %d", System.currentTimeMillis()));
 
@@ -97,5 +102,8 @@ public final class BreadthFirstSearchJob extends UmbraJob {
 				new File("scratch/output-data/output.csv"),
 				new File(getOutputPath())
 		);
+
+		cleanup(statement);
 	}
+
 }

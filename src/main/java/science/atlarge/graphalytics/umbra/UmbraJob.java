@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 
@@ -85,5 +86,7 @@ public abstract class UmbraJob {
 	protected String getOutputPath() {
 		return outputPath;
 	}
+
+	protected abstract void cleanup(Statement statement) throws SQLException;
 
 }

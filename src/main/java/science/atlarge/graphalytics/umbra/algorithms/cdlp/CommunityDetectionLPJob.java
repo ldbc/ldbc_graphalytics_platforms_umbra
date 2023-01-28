@@ -7,6 +7,9 @@ import science.atlarge.graphalytics.execution.RunSpecification;
 import science.atlarge.graphalytics.umbra.UmbraConfiguration;
 import science.atlarge.graphalytics.umbra.UmbraJob;
 
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  * Community Detection by job implementation for Umbra. This class is responsible for formatting CDLP-specific
  * arguments to be passed to the platform executable, and does not include the implementation of the algorithm.
@@ -21,6 +24,11 @@ public final class CommunityDetectionLPJob extends UmbraJob {
 	public CommunityDetectionLPJob(RunSpecification runSpecification, UmbraConfiguration platformConfig,
                                    String inputPath, String outputPath, Graph benchmarkGraph) {
 		super(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+	}
+
+	@Override
+	protected void cleanup(Statement statement) throws SQLException {
+
 	}
 
 	@Override

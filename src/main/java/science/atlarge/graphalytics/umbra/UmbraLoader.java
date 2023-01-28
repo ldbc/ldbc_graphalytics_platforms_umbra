@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import science.atlarge.graphalytics.domain.graph.FormattedGraph;
 
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.Statement;
 
 
 /**
@@ -20,7 +22,6 @@ public class UmbraLoader {
 
 	private static final Logger LOG = LogManager.getLogger();
 
-	protected CommandLine commandLine;
 	protected FormattedGraph formattedGraph;
 	protected UmbraConfiguration platformConfig;
 
@@ -34,62 +35,70 @@ public class UmbraLoader {
 		this.platformConfig = platformConfig;
 	}
 
-	public int load(String loadedInputPath) throws Exception {
-		String loaderDir = platformConfig.getLoaderPath();
-		commandLine = new CommandLine(Paths.get(loaderDir).toFile());
+	public void load() throws Exception {
+		Connection conn = UmbraUtil.getConnection();
 
-		String inputDirectory = FilenameUtils.getFullPath(formattedGraph.getVertexFilePath());
+		Statement statement = conn.createStatement();
+		statement.executeUpdate("DROP TABLE IF EXISTS u");
+		statement.executeUpdate("DROP TABLE IF EXISTS v");
+		statement.executeUpdate("DROP TABLE IF EXISTS e");
 
-		commandLine.addArgument("--graph-name");
-		//commandLine.addArgument(formattedGraph.getName());
-		commandLine.addArgument(formattedGraph.getGraph().getName());
+		String weightAttributeWithoutType = "";
+		String weightAttributeWithType = "";
+		if (formattedGraph.getGraph().getSourceGraph().hasEdgeProperties()) {
+			// the graph is weighted
+			weightAttributeWithoutType = ", weight";
+			weightAttributeWithType = ", weight FLOAT";
+		}
 
-		commandLine.addArgument("--input-directory");
-		commandLine.addArgument(inputDirectory);
+		statement.executeUpdate(String.format("CREATE TABLE v (id INTEGER);"));
+		statement.executeUpdate(String.format("CREATE TABLE e (source INTEGER, target INTEGER%s);", weightAttributeWithType));
 
-		commandLine.addArgument("--input-vertex-path");
-		commandLine.addArgument(formattedGraph.getVertexFilePath());
+		String loaderConfiguration = "(DELIMITER ' ', FORMAT csv)";
+		String dataDirectoryPath = "/input-data/";
+		statement.executeUpdate(String.format(
+				"COPY v (id) FROM '%s/%s.v' %s",
+				dataDirectoryPath,
+				formattedGraph.getGraph().getName(),
+				loaderConfiguration
+		));
+		statement.executeUpdate(String.format(
+				"COPY e (source, target%s) FROM '%s/%s.e' (DELIMITER ' ', FORMAT csv)",
+				weightAttributeWithoutType,
+				dataDirectoryPath,
+				formattedGraph.getGraph().getName(),
+				loaderConfiguration
+		));
 
-		commandLine.addArgument("--input-edge-path");
-		commandLine.addArgument(formattedGraph.getEdgeFilePath());
-
-		commandLine.addArgument("--output-path");
-		commandLine.addArgument(loadedInputPath);
-
-		commandLine.addArgument("--directed");
-		commandLine.addArgument(formattedGraph.isDirected() ? "true" : "false");
-
-		commandLine.addArgument("--weighted");
-		commandLine.addArgument(formattedGraph.hasEdgeProperties() ? "true" : "false");
-
-		String commandString = StringUtils.toString(commandLine.toStrings(), " ");
-		LOG.info(String.format("Execute graph loader with command-line: [%s]", commandString));
-
-		Executor executor = new DefaultExecutor();
-		executor.setStreamHandler(new PumpStreamHandler(System.out, System.err));
-		executor.setExitValue(0);
-
-		return executor.execute(commandLine);
+		// create undirected table 'u'
+		if (formattedGraph.isDirected()) {
+			statement.executeUpdate("CREATE TABLE u (source INTEGER, target INTEGER)");
+			statement.executeUpdate("INSERT INTO u SELECT target, source FROM e");
+			statement.executeUpdate("INSERT INTO u SELECT source, target FROM e");
+		} else {
+			statement.executeUpdate("CREATE TABLE u AS SELECT source, target FROM e");
+		}
+		statement.close();
 	}
 
-	public int unload(String loadedInputPath) throws Exception {
-		String unloaderDir = platformConfig.getUnloaderPath();
-		commandLine = new CommandLine(Paths.get(unloaderDir).toFile());
-
-		commandLine.addArgument("--graph-name");
-		commandLine.addArgument(formattedGraph.getName());
-
-		commandLine.addArgument("--output-path");
-		commandLine.addArgument(loadedInputPath);
-
-		String commandString = StringUtils.toString(commandLine.toStrings(), " ");
-		LOG.info(String.format("Execute graph unloader with command-line: [%s]", commandString));
-
-		Executor executor = new DefaultExecutor();
-		executor.setStreamHandler(new PumpStreamHandler(System.out, System.err));
-		executor.setExitValue(0);
-
-		return executor.execute(commandLine);
+	public void unload() throws Exception {
+//		String unloaderDir = platformConfig.getUnloaderPath();
+//		commandLine = new CommandLine(Paths.get(unloaderDir).toFile());
+//
+//		commandLine.addArgument("--graph-name");
+//		commandLine.addArgument(formattedGraph.getName());
+//
+//		commandLine.addArgument("--output-path");
+//		commandLine.addArgument(loadedInputPath);
+//
+//		String commandString = StringUtils.toString(commandLine.toStrings(), " ");
+//		LOG.info(String.format("Execute graph unloader with command-line: [%s]", commandString));
+//
+//		Executor executor = new DefaultExecutor();
+//		executor.setStreamHandler(new PumpStreamHandler(System.out, System.err));
+//		executor.setExitValue(0);
+//
+//		return executor.execute(commandLine);
 	}
 
 }

@@ -8,8 +8,8 @@
 To set up a Postgres instance, run e.g.:
 
 ```bash
-export POSTGRES_DATA_DIR=~/graphs
-scripts/start-postgres.sh
+export POSTGRES_INPUT_DATA_DIR=~/graphs
+bin/scripts/start-postgres.sh
 ```
 
 ## Testing

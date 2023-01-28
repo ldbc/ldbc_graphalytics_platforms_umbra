@@ -45,29 +45,20 @@ public class UmbraPlatform implements Platform {
 		loader = new UmbraLoader(formattedGraph, platformConfig);
 
 		LOG.info("Loading graph " + formattedGraph.getName());
-		Path loadedPath = Paths.get("./intermediate").resolve(formattedGraph.getName());
-
 		try {
-			int exitCode = loader.load(loadedPath.toString());
-			if (exitCode != 0) {
-				throw new PlatformExecutionException("Umbra exited with an error code: " + exitCode);
-			}
+			loader.load();
 		} catch (Exception e) {
 			throw new PlatformExecutionException("Failed to load a Umbra dataset.", e);
 		}
 		LOG.info("Loaded graph " + formattedGraph.getName());
-		return new LoadedGraph(formattedGraph, loadedPath.toString());
+		return new LoadedGraph(formattedGraph, "");
 	}
 
 	@Override
 	public void deleteGraph(LoadedGraph loadedGraph) throws Exception {
 		LOG.info("Unloading graph " + loadedGraph.getFormattedGraph().getName());
 		try {
-
-			int exitCode = loader.unload(loadedGraph.getLoadedPath());
-			if (exitCode != 0) {
-				throw new PlatformExecutionException("Umbra exited with an error code: " + exitCode);
-			}
+			loader.unload();
 		} catch (Exception e) {
 			throw new PlatformExecutionException("Failed to unload a Umbra dataset.", e);
 		}

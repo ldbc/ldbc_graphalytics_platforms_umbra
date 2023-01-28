@@ -24,9 +24,17 @@ docker run \
     --shm-size=${POSTGRES_SHARED_MEMORY} \
     postgres:${POSTGRES_VERSION}
 
-#scripts/wait-for-it.sh --host=${POSTGRES_HOST} --port=${POSTGRES_PORT}
-# ^ doesn't work for some reason ...
-
-sleep 15
+echo -n "Waiting for the database to start ."
+until python3 scripts/test-db-connection.py 1>/dev/null 2>&1; do
+    docker ps | grep ${POSTGRES_CONTAINER_NAME} 1>/dev/null 2>&1 || (
+        echo
+        echo "Container lost."
+        exit 1
+    )
+    echo -n " ."
+    sleep 1
+done
+echo
+echo "Database started"
 
 scripts/create-db.sh

@@ -1,12 +1,16 @@
 package science.atlarge.graphalytics.umbra.algorithms.cdlp;
 
+import org.apache.commons.io.FileUtils;
 import science.atlarge.graphalytics.domain.algorithms.CommunityDetectionLPParameters;
-import science.atlarge.graphalytics.domain.algorithms.PageRankParameters;
 import science.atlarge.graphalytics.domain.graph.Graph;
 import science.atlarge.graphalytics.execution.RunSpecification;
 import science.atlarge.graphalytics.umbra.UmbraConfiguration;
 import science.atlarge.graphalytics.umbra.UmbraJob;
+import science.atlarge.graphalytics.umbra.UmbraUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -27,23 +31,20 @@ public final class CommunityDetectionLPJob extends UmbraJob {
 	}
 
 	@Override
-	protected void cleanup(Statement statement) throws SQLException {
+	public void execute() throws SQLException, ClassNotFoundException, IOException {
+		Connection conn = UmbraUtil.getConnection();
+		Statement statement = conn.createStatement();
 
+		CommunityDetectionLPParameters params = (CommunityDetectionLPParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
+
+		CommunityDetectionLPComputation communityDetectionLPComputation = new CommunityDetectionLPComputation(statement, params.getMaxIterations());
+		communityDetectionLPComputation.execute();
+
+		// move results to the place expected by the Graphalytics framework
+		FileUtils.moveFile(
+				new File("scratch/output-data/output.csv"),
+				new File(getOutputPath())
+		);
 	}
 
-	@Override
-	public void execute() {
-
-	}
-
-//	@Override
-//	protected void appendAlgorithmParameters() {
-//		commandLine.addArgument("--algorithm");
-//		commandLine.addArgument("cdlp");
-//
-//		CommunityDetectionLPParameters params =
-//				(CommunityDetectionLPParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
-//		commandLine.addArgument("--max-iteration");
-//		commandLine.addArgument(Integer.toString(params.getMaxIterations()));
-//	}
 }

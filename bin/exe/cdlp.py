@@ -11,7 +11,7 @@ con = pg_con.cursor()
 print(f"Processing starts at: {time.time_ns() // 1000000}")
 
 for i in range(0, args.max_iteration+1):
-    con.execute(f"DROP TABLE cdlp{i}")
+    con.execute(f"DROP TABLE IF EXISTS cdlp{i}")
     con.execute(f"CREATE TABLE cdlp{i} (id INTEGER, label INTEGER)")
 
 con.execute("""

@@ -13,15 +13,11 @@ import science.atlarge.graphalytics.umbra.algorithms.cdlp.CommunityDetectionLPJo
 import science.atlarge.graphalytics.umbra.algorithms.lcc.LocalClusteringCoefficientJob;
 import science.atlarge.graphalytics.umbra.algorithms.pr.PageRankJob;
 import science.atlarge.graphalytics.umbra.algorithms.sssp.SingleSourceShortestPathJob;
-import science.atlarge.graphalytics.umbra.algorithms.wcc.WeaklyConnectedComponents;
+import science.atlarge.graphalytics.umbra.algorithms.wcc.WeaklyConnectedComponentsJob;
 import science.atlarge.graphalytics.report.result.BenchmarkMetrics;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Properties;
 
 
 /**
@@ -107,7 +103,7 @@ public class UmbraPlatform implements Platform {
 				job = new SingleSourceShortestPathJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 				break;
 			case WCC:
-				job = new WeaklyConnectedComponents(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+				job = new WeaklyConnectedComponentsJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 				break;
 			default:
 				throw new PlatformExecutionException("Failed to load algorithm implementation.");

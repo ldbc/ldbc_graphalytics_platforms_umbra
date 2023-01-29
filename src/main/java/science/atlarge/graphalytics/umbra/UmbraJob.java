@@ -87,6 +87,4 @@ public abstract class UmbraJob {
 		return outputPath;
 	}
 
-	protected abstract void cleanup(Statement statement) throws SQLException;
-
 }

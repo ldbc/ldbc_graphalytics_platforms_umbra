@@ -1,12 +1,16 @@
 package science.atlarge.graphalytics.umbra.algorithms.pr;
 
-import science.atlarge.graphalytics.domain.algorithms.BreadthFirstSearchParameters;
+import org.apache.commons.io.FileUtils;
 import science.atlarge.graphalytics.domain.algorithms.PageRankParameters;
 import science.atlarge.graphalytics.domain.graph.Graph;
 import science.atlarge.graphalytics.execution.RunSpecification;
 import science.atlarge.graphalytics.umbra.UmbraConfiguration;
 import science.atlarge.graphalytics.umbra.UmbraJob;
+import science.atlarge.graphalytics.umbra.UmbraUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -28,24 +32,20 @@ public final class PageRankJob extends UmbraJob {
     }
 
     @Override
-    protected void cleanup(Statement statement) throws SQLException {
+    public void execute() throws SQLException, IOException, ClassNotFoundException {
+        PageRankParameters params = (PageRankParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
 
+        Connection conn = UmbraUtil.getConnection();
+        Statement statement = conn.createStatement();
+
+        PageRankComputation pageRankComputation = new PageRankComputation(statement, params.getNumberOfIterations(), params.getDampingFactor());
+        pageRankComputation.execute();
+
+        // move results to the place expected by the Graphalytics framework
+        FileUtils.moveFile(
+                new File("scratch/output-data/output.csv"),
+                new File(getOutputPath())
+        );
     }
 
-    @Override
-    public void execute() {
-
-    }
-
-//    protected void appendAlgorithmParameters() {
-//        commandLine.addArgument("--algorithm");
-//        commandLine.addArgument("pr");
-//
-//        PageRankParameters params =
-//                (PageRankParameters) runSpecification.getBenchmarkRun().getAlgorithmParameters();
-//        commandLine.addArgument("--damping-factor");
-//        commandLine.addArgument(Float.toString(params.getDampingFactor()));
-//        commandLine.addArgument("--max-iteration");
-//        commandLine.addArgument(Integer.toString(params.getNumberOfIterations()));
-//    }
 }

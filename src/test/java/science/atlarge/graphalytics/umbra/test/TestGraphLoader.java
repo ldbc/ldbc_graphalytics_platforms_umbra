@@ -17,4 +17,9 @@ public class TestGraphLoader {
         umbraLoadComputation.load();
     }
 
+    public static void loadFosdem(Statement statement) throws SQLException {
+        UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(statement, "fosdem", false, false);
+        umbraLoadComputation.load();
+    }
+
 }

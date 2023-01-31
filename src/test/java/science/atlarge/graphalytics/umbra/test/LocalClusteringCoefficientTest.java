@@ -31,4 +31,14 @@ public class LocalClusteringCoefficientTest {
         c.execute();
     }
 
+    @Test
+    public void testFosdem() throws SQLException, ClassNotFoundException {
+        Connection conn = UmbraUtil.getConnection();
+        Statement statement = conn.createStatement();
+
+        TestGraphLoader.loadFosdem(statement);
+        LocalClusteringCoefficientComputation c = new LocalClusteringCoefficientComputation(statement);
+        c.execute();
+    }
+
 }

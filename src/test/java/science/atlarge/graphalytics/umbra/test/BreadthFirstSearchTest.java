@@ -1,8 +1,10 @@
 package science.atlarge.graphalytics.umbra.test;
 
 import org.junit.Test;
+import science.atlarge.graphalytics.umbra.UmbraLoadComputation;
 import science.atlarge.graphalytics.umbra.UmbraUtil;
 import science.atlarge.graphalytics.umbra.algorithms.bfs.BreadthFirstSearchComputation;
+import science.atlarge.graphalytics.umbra.algorithms.sssp.SingleSourceShortestPathComputation;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -30,4 +32,25 @@ public class BreadthFirstSearchTest {
         breadthFirstSearchComputation.execute();
     }
 
+    @Test
+    public void testDirectedBfsTestGraph() throws SQLException, ClassNotFoundException {
+        Connection conn = UmbraUtil.getConnection();
+        Statement statement = conn.createStatement();
+        UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(
+                statement, "bfs-directed-test", true, false);
+        umbraLoadComputation.load();
+        BreadthFirstSearchComputation c = new BreadthFirstSearchComputation(statement, 1);
+        c.execute();
+    }
+
+    @Test
+    public void testUndirectedBfsTestGraph() throws SQLException, ClassNotFoundException {
+        Connection conn = UmbraUtil.getConnection();
+        Statement statement = conn.createStatement();
+        UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(
+                statement, "bfs-undirected-test", false, false);
+        umbraLoadComputation.load();
+        BreadthFirstSearchComputation c = new BreadthFirstSearchComputation(statement, 1);
+        c.execute();
+    }
 }

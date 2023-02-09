@@ -1,9 +1,11 @@
 package science.atlarge.graphalytics.umbra.test;
 
 import org.junit.Test;
+import science.atlarge.graphalytics.umbra.UmbraLoadComputation;
 import science.atlarge.graphalytics.umbra.UmbraUtil;
 import science.atlarge.graphalytics.umbra.algorithms.bfs.BreadthFirstSearchComputation;
 import science.atlarge.graphalytics.umbra.algorithms.cdlp.CommunityDetectionLPComputation;
+import science.atlarge.graphalytics.umbra.algorithms.wcc.WeaklyConnectedComponentsComputation;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -28,6 +30,28 @@ public class CommunityDetectionLPTest {
 
         TestGraphLoader.loadDirected(statement);
         CommunityDetectionLPComputation c = new CommunityDetectionLPComputation(statement, 2);
+        c.execute();
+    }
+
+    @Test
+    public void testDirectedCdlpTestGraph() throws SQLException, ClassNotFoundException {
+        Connection conn = UmbraUtil.getConnection();
+        Statement statement = conn.createStatement();
+        UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(
+                statement, "cdlp-directed-test", true, false);
+        umbraLoadComputation.load();
+        CommunityDetectionLPComputation c = new CommunityDetectionLPComputation(statement, 5);
+        c.execute();
+    }
+
+    @Test
+    public void testUndirectedCdlpTestGraph() throws SQLException, ClassNotFoundException {
+        Connection conn = UmbraUtil.getConnection();
+        Statement statement = conn.createStatement();
+        UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(
+                statement, "cdlp-undirected-test", false, false);
+        umbraLoadComputation.load();
+        CommunityDetectionLPComputation c = new CommunityDetectionLPComputation(statement, 5);
         c.execute();
     }
 

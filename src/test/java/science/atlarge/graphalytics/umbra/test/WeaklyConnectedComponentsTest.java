@@ -4,7 +4,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import science.atlarge.graphalytics.umbra.UmbraLoadComputation;
 import science.atlarge.graphalytics.umbra.UmbraUtil;
-import science.atlarge.graphalytics.umbra.algorithms.sssp.SingleSourceShortestPathComputation;
 import science.atlarge.graphalytics.umbra.algorithms.wcc.WeaklyConnectedComponentsComputation;
 
 import java.sql.Connection;
@@ -13,43 +12,43 @@ import java.sql.Statement;
 
 public class WeaklyConnectedComponentsTest {
 
-    @Ignore
+    @Test
     public void testUndirected() throws SQLException, ClassNotFoundException {
         Connection conn = UmbraUtil.getConnection();
         Statement statement = conn.createStatement();
 
-        TestGraphLoader.loadUndirected(statement);
+        ExampleGraphLoader.loadUndirected(statement);
         WeaklyConnectedComponentsComputation c = new WeaklyConnectedComponentsComputation(statement);
         c.execute();
     }
 
-    @Ignore
+    @Test
     public void testDirected() throws SQLException, ClassNotFoundException {
         Connection conn = UmbraUtil.getConnection();
         Statement statement = conn.createStatement();
 
-        TestGraphLoader.loadDirected(statement);
+        ExampleGraphLoader.loadDirected(statement);
         WeaklyConnectedComponentsComputation c = new WeaklyConnectedComponentsComputation(statement);
         c.execute();
     }
 
-    @Ignore
+    @Test
     public void testDirectedWccTestGraph() throws SQLException, ClassNotFoundException {
         Connection conn = UmbraUtil.getConnection();
         Statement statement = conn.createStatement();
         UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(
-                statement, "wcc-directed-test", true, false);
+                statement, "test-wcc-directed", true, false);
         umbraLoadComputation.load();
         WeaklyConnectedComponentsComputation c = new WeaklyConnectedComponentsComputation(statement);
         c.execute();
     }
 
-    @Ignore
+    @Test
     public void testUndirectedWccTestGraph() throws SQLException, ClassNotFoundException {
         Connection conn = UmbraUtil.getConnection();
         Statement statement = conn.createStatement();
         UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(
-                statement, "wcc-undirected-test", false, false);
+                statement, "test-wcc-undirected", false, false);
         umbraLoadComputation.load();
         WeaklyConnectedComponentsComputation c = new WeaklyConnectedComponentsComputation(statement);
         c.execute();

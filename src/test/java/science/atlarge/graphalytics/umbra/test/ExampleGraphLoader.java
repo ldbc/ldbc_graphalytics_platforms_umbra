@@ -5,7 +5,7 @@ import science.atlarge.graphalytics.umbra.UmbraLoadComputation;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class TestGraphLoader {
+public class ExampleGraphLoader {
 
     public static void loadDirected(Statement statement) throws SQLException {
         UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(statement, "example-directed", true, true);

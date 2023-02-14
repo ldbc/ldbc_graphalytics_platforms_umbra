@@ -3,13 +3,13 @@ package science.atlarge.graphalytics.umbra.test;
 import org.junit.Test;
 import science.atlarge.graphalytics.umbra.UmbraLoadComputation;
 import science.atlarge.graphalytics.umbra.UmbraUtil;
-import science.atlarge.graphalytics.umbra.algorithms.sssp.SingleSourceShortestPathComputation;
+import science.atlarge.graphalytics.umbra.algorithms.sssp.SingleSourceShortestPathsComputation;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SingleSourceShortestPathTest {
+public class SingleSourceShortestPathsTest {
 
     @Test
     public void testUndirected() throws SQLException, ClassNotFoundException {
@@ -17,7 +17,7 @@ public class SingleSourceShortestPathTest {
         Statement statement = conn.createStatement();
 
         ExampleGraphLoader.loadUndirected(statement);
-        SingleSourceShortestPathComputation c = new SingleSourceShortestPathComputation(statement, 2);
+        SingleSourceShortestPathsComputation c = new SingleSourceShortestPathsComputation(statement, 2);
         c.execute();
     }
 
@@ -27,7 +27,7 @@ public class SingleSourceShortestPathTest {
         Statement statement = conn.createStatement();
 
         ExampleGraphLoader.loadDirected(statement);
-        SingleSourceShortestPathComputation c = new SingleSourceShortestPathComputation(statement, 1);
+        SingleSourceShortestPathsComputation c = new SingleSourceShortestPathsComputation(statement, 1);
         c.execute();
     }
 
@@ -38,7 +38,7 @@ public class SingleSourceShortestPathTest {
         UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(
                 statement, "test-sssp-directed", true, true);
         umbraLoadComputation.load();
-        SingleSourceShortestPathComputation c = new SingleSourceShortestPathComputation(statement, 1);
+        SingleSourceShortestPathsComputation c = new SingleSourceShortestPathsComputation(statement, 1);
         c.execute();
     }
 
@@ -49,7 +49,7 @@ public class SingleSourceShortestPathTest {
         UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(
                 statement, "test-sssp-undirected", false, true);
         umbraLoadComputation.load();
-        SingleSourceShortestPathComputation c = new SingleSourceShortestPathComputation(statement, 1);
+        SingleSourceShortestPathsComputation c = new SingleSourceShortestPathsComputation(statement, 1);
         c.execute();
     }
 

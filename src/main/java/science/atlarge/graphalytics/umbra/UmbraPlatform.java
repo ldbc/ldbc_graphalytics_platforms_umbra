@@ -12,7 +12,7 @@ import science.atlarge.graphalytics.umbra.algorithms.bfs.BreadthFirstSearchJob;
 import science.atlarge.graphalytics.umbra.algorithms.cdlp.CommunityDetectionLPJob;
 import science.atlarge.graphalytics.umbra.algorithms.lcc.LocalClusteringCoefficientJob;
 import science.atlarge.graphalytics.umbra.algorithms.pr.PageRankJob;
-import science.atlarge.graphalytics.umbra.algorithms.sssp.SingleSourceShortestPathJob;
+import science.atlarge.graphalytics.umbra.algorithms.sssp.SingleSourceShortestPathsJob;
 import science.atlarge.graphalytics.umbra.algorithms.wcc.WeaklyConnectedComponentsJob;
 import science.atlarge.graphalytics.report.result.BenchmarkMetrics;
 
@@ -100,7 +100,7 @@ public class UmbraPlatform implements Platform {
 				job = new PageRankJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 				break;
 			case SSSP:
-				job = new SingleSourceShortestPathJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
+				job = new SingleSourceShortestPathsJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 				break;
 			case WCC:
 				job = new WeaklyConnectedComponentsJob(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);

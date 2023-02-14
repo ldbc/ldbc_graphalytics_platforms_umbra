@@ -1,6 +1,6 @@
 # Postgres/Umbra Graphalytics implementation
 
-Implementation of LDBC Graphalytics using PostgreSQL and [Umbra](https://umbra-db.com/):
+Implementation of LDBC Graphalytics using [PostgreSQL](https://www.postgresql.org/) and [Umbra](https://umbra-db.com/).
 
 Pointers:
 
@@ -31,6 +31,3 @@ For manual tests that require epsilon matching, [`numdiff`](https://www.nongnu.o
 ```bash
 numdiff --absolute-tolerance 0.0001 scratch/output-data/output.csv ~/graphs/pr-directed-test-PR
 ```
-
-
-

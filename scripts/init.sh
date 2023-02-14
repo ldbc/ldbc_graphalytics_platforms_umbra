@@ -8,7 +8,7 @@ PROJECT_VERSION=0.0.1-SNAPSHOT
 PROJECT=graphalytics-${GRAPHALYTICS_VERSION}-umbra-${PROJECT_VERSION}
 
 rm -rf ${PROJECT}
-mvn package
+mvn package -DskipTests
 tar xf ${PROJECT}-bin.tar.gz
 cd ${PROJECT}/
 

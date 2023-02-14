@@ -18,15 +18,7 @@ bin/scripts/start-postgres.sh
 
 ## Testing
 
-To test the current state of your codebase, create a new commit:
-
-```bash
-git commit -am "WIP"
-```
-
-Then, run the following command.
-
-:warning: This script amends the last commit, so ensure that you have a `WIP` commit on top of your commit tree.
+Run the following command:
 
 ```bash
 scripts/package-and-run-benchmark.sh
@@ -39,5 +31,6 @@ For manual tests that require epsilon matching, [`numdiff`](https://www.nongnu.o
 ```bash
 numdiff --absolute-tolerance 0.0001 scratch/output-data/output.csv ~/graphs/pr-directed-test-PR
 ```
+
 
 

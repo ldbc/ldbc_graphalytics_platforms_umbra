@@ -8,15 +8,13 @@ workflows:
     - build
 jobs:
   build:
-    docker:
-      - image: cimg/base:2023.02-22.04
-    resource_class: xlarge
+    machine:
+      image: ubuntu-2204:2022.04.2
     steps:
       - checkout
       - run: scripts/install-dependencies.sh
       - run: cp -r example-data-sets/graphs ~/
       - run: |
           export POSTGRES_INPUT_DATA_DIR=~/graphs
-          bin/scripts/start-postgres.sh
           scripts/package-and-run-benchmark.sh
       - run: slack/status

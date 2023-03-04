@@ -19,3 +19,4 @@ jobs:
           export POSTGRES_INPUT_DATA_DIR=~/graphs
           bin/scripts/start-postgres.sh
           scripts/package-and-run-benchmark.sh
+      - run: slack/status

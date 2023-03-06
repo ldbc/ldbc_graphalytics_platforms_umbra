@@ -58,7 +58,7 @@ public class LocalClusteringCoefficientTest {
         Connection conn = UmbraUtil.getConnection();
         Statement statement = conn.createStatement();
 
-        TestGraphLoader.loadFosdem(statement);
+        ExampleGraphLoader.loadFosdem(statement);
         LocalClusteringCoefficientComputation c = new LocalClusteringCoefficientComputation(statement);
         c.execute();
     }

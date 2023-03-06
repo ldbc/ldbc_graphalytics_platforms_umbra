@@ -1,8 +1,8 @@
 package science.atlarge.graphalytics.umbra.test;
 
 import org.junit.Test;
+import science.atlarge.graphalytics.umbra.UmbraLoadComputation;
 import science.atlarge.graphalytics.umbra.UmbraUtil;
-import science.atlarge.graphalytics.umbra.algorithms.bfs.BreadthFirstSearchComputation;
 import science.atlarge.graphalytics.umbra.algorithms.pr.PageRankComputation;
 
 import java.sql.Connection;
@@ -16,7 +16,7 @@ public class PageRankTest {
         Connection conn = UmbraUtil.getConnection();
         Statement statement = conn.createStatement();
 
-        TestGraphLoader.loadUndirected(statement);
+        ExampleGraphLoader.loadUndirected(statement);
         PageRankComputation c = new PageRankComputation(statement, 2, 0.85);
         c.execute();
     }
@@ -26,18 +26,30 @@ public class PageRankTest {
         Connection conn = UmbraUtil.getConnection();
         Statement statement = conn.createStatement();
 
-        TestGraphLoader.loadDirected(statement);
+        ExampleGraphLoader.loadDirected(statement);
         PageRankComputation c = new PageRankComputation(statement, 2, 0.85);
         c.execute();
     }
 
     @Test
-    public void testFosdem() throws SQLException, ClassNotFoundException {
+    public void testPageRankDirectedGraph() throws SQLException, ClassNotFoundException {
         Connection conn = UmbraUtil.getConnection();
         Statement statement = conn.createStatement();
+        UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(
+                statement, "test-pr-directed", true, false);
+        umbraLoadComputation.load();
+        PageRankComputation c = new PageRankComputation(statement, 14, 0.85);
+        c.execute();
+    }
 
-        TestGraphLoader.loadFosdem(statement);
-        PageRankComputation c = new PageRankComputation(statement, 5, 0.85);
+    @Test
+    public void testPageRankUndirectedGraph() throws SQLException, ClassNotFoundException {
+        Connection conn = UmbraUtil.getConnection();
+        Statement statement = conn.createStatement();
+        UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(
+                statement, "test-pr-undirected", false, false);
+        umbraLoadComputation.load();
+        PageRankComputation c = new PageRankComputation(statement, 26, 0.85);
         c.execute();
     }
 

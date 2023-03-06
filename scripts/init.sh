@@ -3,12 +3,12 @@
 set -eu
 
 GRAPHS_DIR=${1:-~/graphs}
-GRAPHALYTICS_VERSION=1.5.0-SNAPSHOT
+GRAPHALYTICS_VERSION=1.6.0-SNAPSHOT
 PROJECT_VERSION=0.0.1-SNAPSHOT
 PROJECT=graphalytics-${GRAPHALYTICS_VERSION}-umbra-${PROJECT_VERSION}
 
 rm -rf ${PROJECT}
-mvn package
+mvn package -DskipTests
 tar xf ${PROJECT}-bin.tar.gz
 cd ${PROJECT}/
 

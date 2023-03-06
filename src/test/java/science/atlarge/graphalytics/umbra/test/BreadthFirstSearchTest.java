@@ -1,6 +1,7 @@
 package science.atlarge.graphalytics.umbra.test;
 
 import org.junit.Test;
+import science.atlarge.graphalytics.umbra.UmbraLoadComputation;
 import science.atlarge.graphalytics.umbra.UmbraUtil;
 import science.atlarge.graphalytics.umbra.algorithms.bfs.BreadthFirstSearchComputation;
 
@@ -15,7 +16,7 @@ public class BreadthFirstSearchTest {
         Connection conn = UmbraUtil.getConnection();
         Statement statement = conn.createStatement();
 
-        TestGraphLoader.loadUndirected(statement);
+        ExampleGraphLoader.loadUndirected(statement);
         BreadthFirstSearchComputation breadthFirstSearchComputation = new BreadthFirstSearchComputation(statement, 2);
         breadthFirstSearchComputation.execute();
     }
@@ -25,9 +26,30 @@ public class BreadthFirstSearchTest {
         Connection conn = UmbraUtil.getConnection();
         Statement statement = conn.createStatement();
 
-        TestGraphLoader.loadDirected(statement);
+        ExampleGraphLoader.loadDirected(statement);
         BreadthFirstSearchComputation breadthFirstSearchComputation = new BreadthFirstSearchComputation(statement, 1);
         breadthFirstSearchComputation.execute();
     }
 
+    @Test
+    public void testDirectedBfsTestGraph() throws SQLException, ClassNotFoundException {
+        Connection conn = UmbraUtil.getConnection();
+        Statement statement = conn.createStatement();
+        UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(
+                statement, "test-bfs-directed", true, false);
+        umbraLoadComputation.load();
+        BreadthFirstSearchComputation c = new BreadthFirstSearchComputation(statement, 1);
+        c.execute();
+    }
+
+    @Test
+    public void testUndirectedBfsTestGraph() throws SQLException, ClassNotFoundException {
+        Connection conn = UmbraUtil.getConnection();
+        Statement statement = conn.createStatement();
+        UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(
+                statement, "test-bfs-undirected", false, false);
+        umbraLoadComputation.load();
+        BreadthFirstSearchComputation c = new BreadthFirstSearchComputation(statement, 1);
+        c.execute();
+    }
 }

@@ -1,0 +1,20 @@
+version: 2.1
+orbs:
+  slack: circleci/slack@3.4.2
+workflows:
+  version: 2
+  build:
+    jobs:
+    - build
+jobs:
+  build:
+    machine:
+      image: ubuntu-2204:2022.04.2
+    steps:
+      - checkout
+      - run: scripts/install-dependencies.sh
+      - run: cp -r example-data-sets/graphs ~/
+      - run: |
+          export POSTGRES_INPUT_DATA_DIR=~/graphs
+          scripts/package-and-run-benchmark.sh
+      - slack/status

@@ -15,18 +15,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Single Source Shortest Path job implementation for Umbra. This class is responsible for formatting SSSP-specific
+ * Single Source Shortest Paths job implementation for Umbra. This class is responsible for formatting SSSP-specific
  * arguments to be passed to the platform executable, and does not include the implementation of the algorithm.
  */
-public final class SingleSourceShortestPathJob extends UmbraJob {
+public final class SingleSourceShortestPathsJob extends UmbraJob {
 
 	/**
-	 * Creates a new SingleSourceShortestPathJob object with all mandatory parameters specified.
+	 * Creates a new SingleSourceShortestPathsJob object with all mandatory parameters specified.
 	 * @param platformConfig the platform configuration.
 	 * @param inputPath the path to the input graph.
 	 */
-	public SingleSourceShortestPathJob(RunSpecification runSpecification, UmbraConfiguration platformConfig,
-									   String inputPath, String outputPath, Graph benchmarkGraph) {
+	public SingleSourceShortestPathsJob(RunSpecification runSpecification, UmbraConfiguration platformConfig,
+										String inputPath, String outputPath, Graph benchmarkGraph) {
 		super(runSpecification, platformConfig, inputPath, outputPath, benchmarkGraph);
 	}
 
@@ -37,7 +37,7 @@ public final class SingleSourceShortestPathJob extends UmbraJob {
 		Connection conn = UmbraUtil.getConnection();
 		Statement statement = conn.createStatement();
 
-		SingleSourceShortestPathComputation singleSourceShortestPathComputation = new SingleSourceShortestPathComputation(statement, params.getSourceVertex());
+		SingleSourceShortestPathsComputation singleSourceShortestPathComputation = new SingleSourceShortestPathsComputation(statement, params.getSourceVertex());
 		singleSourceShortestPathComputation.execute();
 
 		// move results to the place expected by the Graphalytics framework

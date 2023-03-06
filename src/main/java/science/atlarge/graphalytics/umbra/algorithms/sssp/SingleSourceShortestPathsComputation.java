@@ -1,18 +1,16 @@
 package science.atlarge.graphalytics.umbra.algorithms.sssp;
 
-import org.apache.commons.io.FileUtils;
 import science.atlarge.graphalytics.umbra.UmbraComputation;
 
-import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SingleSourceShortestPathComputation extends UmbraComputation {
+public class SingleSourceShortestPathsComputation extends UmbraComputation {
 
     protected long sourceVertex;
 
-    public SingleSourceShortestPathComputation(Statement statement, long sourceVertex) {
+    public SingleSourceShortestPathsComputation(Statement statement, long sourceVertex) {
         super(statement);
         this.sourceVertex = sourceVertex;
     }

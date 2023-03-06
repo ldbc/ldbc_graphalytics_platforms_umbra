@@ -62,9 +62,9 @@ public class UmbraLoadComputation {
     }
 
     public void unload() throws SQLException {
-        statement.executeUpdate("DROP TABLE IF EXISTS u");
-        statement.executeUpdate("DROP TABLE IF EXISTS v");
-        statement.executeUpdate("DROP TABLE IF EXISTS e");
+        statement.executeUpdate("DROP TABLE IF EXISTS u CASCADE");
+        statement.executeUpdate("DROP TABLE IF EXISTS v CASCADE");
+        statement.executeUpdate("DROP TABLE IF EXISTS e CASCADE");
     }
 
 }

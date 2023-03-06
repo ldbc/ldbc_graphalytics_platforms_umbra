@@ -4,6 +4,7 @@ import org.junit.Test;
 import science.atlarge.graphalytics.umbra.UmbraLoadComputation;
 import science.atlarge.graphalytics.umbra.UmbraUtil;
 import science.atlarge.graphalytics.umbra.algorithms.cdlp.CommunityDetectionLPComputation;
+import science.atlarge.graphalytics.umbra.algorithms.lcc.LocalClusteringCoefficientComputation;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -50,6 +51,16 @@ public class CommunityDetectionLPTest {
                 statement, "test-cdlp-undirected", false, false);
         umbraLoadComputation.load();
         CommunityDetectionLPComputation c = new CommunityDetectionLPComputation(statement, 5);
+        c.execute();
+    }
+
+    @Test
+    public void testFosdem() throws SQLException, ClassNotFoundException {
+        Connection conn = UmbraUtil.getConnection();
+        Statement statement = conn.createStatement();
+
+        ExampleGraphLoader.loadFosdem(statement);
+        CommunityDetectionLPComputation c = new CommunityDetectionLPComputation(statement, 2);
         c.execute();
     }
 

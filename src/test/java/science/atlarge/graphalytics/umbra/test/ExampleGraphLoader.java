@@ -22,4 +22,9 @@ public class ExampleGraphLoader {
         umbraLoadComputation.load();
     }
 
+    public static void loadFosdemWeighted(Statement statement) throws SQLException {
+        UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(statement, "fosdem-weighted", false, true);
+        umbraLoadComputation.load();
+    }
+
 }

@@ -27,4 +27,9 @@ public class ExampleGraphLoader {
         umbraLoadComputation.load();
     }
 
+    public static void loadFosdemDirected(Statement statement) throws SQLException {
+        UmbraLoadComputation umbraLoadComputation = new UmbraLoadComputation(statement, "fosdem-directed", true, false);
+        umbraLoadComputation.load();
+    }
+
 }

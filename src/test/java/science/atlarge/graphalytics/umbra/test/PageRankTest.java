@@ -53,4 +53,14 @@ public class PageRankTest {
         c.execute();
     }
 
+    @Test
+    public void testFosdem() throws SQLException, ClassNotFoundException {
+        Connection conn = UmbraUtil.getConnection();
+        Statement statement = conn.createStatement();
+
+        ExampleGraphLoader.loadFosdemDirected(statement);
+        PageRankComputation c = new PageRankComputation(statement, 5, 0.85);
+        c.execute();
+    }
+
 }

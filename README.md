@@ -7,18 +7,48 @@ Pointers:
 * [Graphalytics specification](https://ldbcouncil.org/ldbc_graphalytics_docs/graphalytics_spec.pdf)
 * [Graphalytics website](https://ldbcouncil.org/benchmarks/graphalytics/)
 
-## Getting started
+### Building the project and running the benchmark
 
-To set up a Postgres instance, run e.g.:
+1. To initialize the benchmark package, run:
 
-```bash
-export POSTGRES_INPUT_DATA_DIR=~/graphs
-bin/scripts/start-postgres.sh
-```
+    ```bash
+    scripts/init.sh ${GRAPHS_DIR}
+    ```
 
-## Testing
+    where `GRAPHS_DIR` is the directory of the graphs and the validation data. The argument is optional and its default value is `~/graphs`.
 
-Run the following command:
+    This script creates a Maven package (`graphalytics-${GRAPHALYTICS_VERSION}-umbra-${PROJECT_VERSION}.tar.gz`). Then, it decompresses the package, initializes a configuration directory `config` (based on the content of the `config-template` directory) and sets the location of the graph directory.
+
+    Note that the project uses the [Build Number Maven plug-in](https://www.mojohaus.org/buildnumber-maven-plugin/) to ensure reproducibility. Hence, builds fail if the local Git repository contains uncommitted changes. To build it regardless (for testing), run it as follows:
+
+    ```bash
+    scripts/init-for-testing.sh ${GRAPHS_DIR}
+    ```
+
+1. Navigate to the directory created by the `init.sh` script:
+
+    ```bash
+    cd graphalytics-*-umbra-*/
+    ```
+
+1. Edit the configuration files (e.g. graphs to be included in the benchmark) in the `config` directory. To conduct benchmark runs, edit the `config/benchmark.properties` file and replace the `include = benchmarks/custom.properties` to select the dataset size you wish to use, e.g. `include = benchmarks/xl.properties`
+
+1. To set up a Postgres instance, run e.g.:
+
+    ```bash
+    export POSTGRES_INPUT_DATA_DIR=~/graphs
+    bin/scripts/start-postgres.sh
+    ```
+
+1. Run the benchmark with the following command:
+
+    ```bash
+    bin/sh/run-benchmark.sh
+    ```
+
+## Testing the package
+
+If you would like to initialize the benchmark and run it with the default configuration, run the following:
 
 ```bash
 scripts/package-and-run-benchmark.sh

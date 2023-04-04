@@ -9,7 +9,7 @@ cd ${rootdir}
 . scripts/project-vars.sh
 
 rm -rf ${PROJECT}
-mvn package -DskipTests
+mvn package -DskipTests -Dmaven.buildNumber.doCheck=false
 tar xf ${PROJECT}-bin.tar.gz
 cd ${PROJECT}/
 

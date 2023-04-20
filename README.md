@@ -1,5 +1,7 @@
 # Postgres/Umbra Graphalytics implementation
 
+[![Build Status](https://circleci.com/gh/ldbc/ldbc_graphalytics_platforms_umbra.svg?style=svg)](https://app.circleci.com/pipelines/github/ldbc/ldbc_graphalytics_platforms_umbra)
+
 Implementation of LDBC Graphalytics using [PostgreSQL](https://www.postgresql.org/) and [Umbra](https://umbra-db.com/).
 
 Pointers:

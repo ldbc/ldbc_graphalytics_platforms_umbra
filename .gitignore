@@ -144,4 +144,3 @@ buildNumber.properties
 # End of https://www.gitignore.io/api/java,maven,cmake,intellij+all
 
 *.swp
-scratch/

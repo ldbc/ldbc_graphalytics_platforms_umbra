@@ -24,6 +24,10 @@ docker run \
     --shm-size=${POSTGRES_SHARED_MEMORY} \
     postgres:${POSTGRES_VERSION}
 
+# fix permission issues on Linux, see also
+# https://stackoverflow.com/questions/34031397/running-docker-on-ubuntu-mounted-host-volume-is-not-writable-from-container
+docker exec ${POSTGRES_CONTAINER_NAME} bash -c "chmod 777 /output-data"
+
 echo -n "Waiting for the database to start ."
 until python3 scripts/test-db-connection.py 1>/dev/null 2>&1; do
     docker ps | grep ${POSTGRES_CONTAINER_NAME} 1>/dev/null 2>&1 || (
